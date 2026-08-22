@@ -15,15 +15,18 @@ Supported mode: **launch**. The official flow opens new tabs for browser tasks.
 
 ## Detection
 
-The detector watches the Claude active-control and retained-style markers. A signal distinguishes a marker present now from one observed earlier in the detector session; either state keeps `isAgenticUseDetected` latched. Generic automation is reported separately only when a WebDriver or Playwright signal appears. The lab has not established that every current Claude Code + Chrome action emits either Claude marker.
+The detector watches the Claude active-control and retained-style markers. A signal distinguishes a marker present now from one observed earlier in the detector session; either state keeps `isAgenticUseDetected` latched. Generic automation is reported separately only when a WebDriver or Playwright signal appears.
+
+The active-control marker transition was observed with Claude Code 2.1.240 and Claude in Chrome 1.0.85. Coverage beyond that version pair and across other browser actions is unverified.
 
 ## Live Snapshot
-<img width="2020" height="964" alt="image" src="https://github.com/user-attachments/assets/1bf2f3c1-bd76-4da4-be16-73f5c680e16f" />
+<img width="2020" height="964" alt="Claude Code 2.1.240 with Claude in Chrome 1.0.85 detection lab snapshot" src="https://github.com/user-attachments/assets/1bf2f3c1-bd76-4da4-be16-73f5c680e16f" />
 
 ## Inspection
 
 - Official docs inspected: 2026-08-22.
-- Product test: not manually performed.
+- Product test: active-control marker transition observed on 2026-08-22.
+- Tested versions: Claude Code 2.1.240; Claude in Chrome 1.0.85.
 - Documented prerequisites: Claude in Chrome 1.0.36+; browser selection requires Claude Code 2.1.154+.
 
 Sources: [Anthropic — Use Claude Code with Chrome](https://code.claude.com/docs/en/chrome), [CHEQ marker research](https://cheq.ai/blog/the-cyborg-session-reversing-detecting-claude-ai-agent-chrome-extension/).
