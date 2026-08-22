@@ -34,6 +34,7 @@ The current probes inspect:
 - Claude accessibility ref-tracking globals.
 - Electron's user-agent token as informational runtime evidence only.
 - The Codex built-in Browser context root.
+- The Codex Chrome extension agent-overlay root.
 - `navigator.webdriver`.
 - Playwright's `window.__playwright__binding__` and `window.__pwInitScripts` globals.
 
@@ -51,7 +52,7 @@ Sources were inspected on 2026-08-22. The Codex built-in Browser flow was manual
 | [Claude Code Desktop Browser pane](docs/approaches/claude-code-desktop-browser-pane.md) | Launch, takeover | UA or ref globals | Not observed | Signals inspected only in Claude Desktop 1.34493.1 (255293) | Electron runtime; separate in-app profile |
 | [Claude Desktop Computer Use](docs/approaches/claude-computer-use.md) | None | Not testable | Not testable | Browsers are view-only in Desktop 1.34493.1 (255293) | Limitation fully inspected |
 | [Codex built-in Browser](docs/approaches/codex-built-in-browser.md) | Launch, takeover | Marker-triggered | Not observed | Marker inspected only in Codex 26.818.41509 | `#codex-browser-sidebar-comments-root` |
-| [Codex Chrome extension](docs/approaches/codex-chrome-extension.md) | Launch, takeover | No known signal | Untested | No product-specific page marker is known | Uses the user's Chrome profile |
+| [Codex Chrome extension](docs/approaches/codex-chrome-extension.md) | Launch, takeover | Marker-triggered | Not observed | Marker inspected in public extension 1.2.27268.51612 | Retained agent-overlay root |
 | [Codex Computer Use](docs/approaches/codex-computer-use.md) | Launch, takeover | No known signal | Untested | Native input may be page-unobservable | macOS and Windows desktop flow |
 | [Claude Code + Playwright MCP](docs/approaches/claude-code-playwright-mcp.md) | Launch | No | Conditional | Generic signals do not identify Claude | WebDriver or Playwright globals |
 | [Claude Code + Chrome DevTools MCP](docs/approaches/claude-code-chrome-devtools-mcp.md) | Launch, takeover | No | Conditional | CDP alone has no current reliable probe | WebDriver may appear in launched browsers |

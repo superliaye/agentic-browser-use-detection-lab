@@ -6,6 +6,7 @@ export {
   claudePriorControlProbe,
   claudeRefTrackingGlobalsProbe,
   codexBuiltInBrowserProbe,
+  codexExtensionAgentOverlayProbe,
   defaultProbes,
   electronUserAgentProbe,
   playwrightWindowGlobalsProbe,

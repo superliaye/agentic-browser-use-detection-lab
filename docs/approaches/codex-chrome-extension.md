@@ -9,17 +9,31 @@ OpenAI's ChatGPT Chrome extension opens a side chat beside the current tab. A Ch
 Supported modes: **launch** and **takeover**.
 
 1. In the ChatGPT desktop app, install the Chrome plugin and its Chrome extension.
-2. For takeover, open the [lab](https://superliaye.github.io/agentic-browser-use-detection-lab/?approach=codex-chrome-extension&mode=takeover) and the extension panel. For launch, use the generated URL prompt.
-3. Start a Codex chat, give it the generated prompt, and approve site access if asked.
+2. Start a new Codex task with the Chrome plugin enabled. For takeover, first open the [lab](https://superliaye.github.io/agentic-browser-use-detection-lab/?approach=codex-chrome-extension&mode=takeover) in Google Chrome.
+3. Give Codex the generated prompt and approve site access if asked. The prompt makes Codex initialize its Chrome client, verify the tab, and stay in that same tab for the interaction and result.
 
 ## Detection
 
-No product-specific DOM or JavaScript marker is currently known. The lab does not treat extension installation as active use. Generic automation signals may or may not appear; the product flow has not been manually inspected.
+The detector watches this extension-owned overlay root:
+
+```html
+<div
+  id="codex-agent-overlay-root"
+  data-codex-agent-overlay-root="true"
+></div>
+```
+
+The extension creates the root after linking the page to an agent session. Its presence sets `isAgenticUseDetected` through the `codex-extension-agent-overlay-root` signal. The root can remain after control stops, so it proves that Codex extension control occurred in this page document, not that Codex is acting at the current moment.
+
+The signal is `detected_now` while the root is present and `detected_earlier_in_session` if it disappears after being observed. The aggregate agentic-use boolean stays `true` for the detector session. The marker is an implementation artifact, not a supported OpenAI detection API, and its absence means only “not detected.”
+
+The inspected flow reported `navigator.webdriver === false` and no known Playwright globals, so no generic automation signal was detected. The lab does not treat extension installation as agentic use and does not probe the extension's web-accessible cursor asset.
 
 ## Inspection
 
 - Official docs inspected: 2026-08-22.
-- Product test: not manually performed.
-- Extension, ChatGPT desktop, Chrome, and OS versions: not recorded.
+- Product test: Codex claimed a Chrome tab and incremented the lab counter; the overlay root was visible.
+- Public Chrome extension artifact inspected: version 1.2.27268.51612.
+- Versions used by the manual product test: not recorded.
 
-Source: [OpenAI — Chrome extension](https://learn.chatgpt.com/docs/chrome-extension).
+Sources: [OpenAI — Chrome extension](https://learn.chatgpt.com/docs/chrome-extension), [ChatGPT in the Chrome Web Store](https://chromewebstore.google.com/detail/chatgpt/hehggadaopoacecdllhhajmbjkdcmajg), [OpenAI Codex issue #24040](https://github.com/openai/codex/issues/24040).

@@ -6,6 +6,7 @@ import {
   electronUserAgentProbe,
 } from "./claude-desktop-browser.js";
 import { codexBuiltInBrowserProbe } from "./codex-browser.js";
+import { codexExtensionAgentOverlayProbe } from "./codex-chrome-extension.js";
 import { playwrightWindowGlobalsProbe } from "./playwright.js";
 import { webdriverProbe } from "./webdriver.js";
 
@@ -16,6 +17,7 @@ export {
   electronUserAgentProbe,
 } from "./claude-desktop-browser.js";
 export { codexBuiltInBrowserProbe } from "./codex-browser.js";
+export { codexExtensionAgentOverlayProbe } from "./codex-chrome-extension.js";
 export { playwrightWindowGlobalsProbe } from "./playwright.js";
 export { webdriverProbe } from "./webdriver.js";
 
@@ -26,6 +28,7 @@ export const defaultProbes: readonly DetectionProbe[] = Object.freeze([
   claudeRefTrackingGlobalsProbe,
   electronUserAgentProbe,
   codexBuiltInBrowserProbe,
+  codexExtensionAgentOverlayProbe,
   webdriverProbe,
   playwrightWindowGlobalsProbe,
 ]);

@@ -16,6 +16,7 @@ export interface AgenticApproach {
   readonly instructions: readonly ApproachModeInstructions[];
   readonly docsPath: string;
   readonly expectedSignalIds: readonly string[];
+  readonly promptSetup?: string;
   readonly unavailableReason?: string;
 }
 
@@ -179,21 +180,24 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       {
         mode: "launch",
         steps: [
-          "Install and sign in to the OpenAI Chrome extension, then open its panel.",
-          "Copy the generated prompt below into the extension.",
+          "Install the Chrome plugin from the ChatGPT desktop app and its extension in Google Chrome.",
+          "Start a new Codex task with the Chrome plugin enabled, then copy the generated prompt below into the task.",
           "Approve site access or browser actions when asked.",
         ],
       },
       {
         mode: "takeover",
         steps: [
-          `Keep ${TEST_URL_PLACEHOLDER} open in Chrome and open the OpenAI extension panel.`,
-          "Copy the generated prompt below into the extension and approve access when asked.",
+          `Keep ${TEST_URL_PLACEHOLDER} open in Google Chrome.`,
+          "Start a new Codex task with the Chrome plugin enabled, then copy the generated prompt below into the task.",
+          "Approve site access or browser actions when asked.",
         ],
       },
     ],
     docsPath: "docs/approaches/codex-chrome-extension.md",
-    expectedSignalIds: [],
+    expectedSignalIds: ["codex-extension-agent-overlay-root"],
+    promptSetup:
+      'First initialize the installed Google Chrome browser-control client and select agent.browsers.get("chrome"). List the open Chrome tabs to verify the connection. Do not declare the native host unavailable or outdated without attempting browser setup and reporting the exact setup error. Use Google Chrome, not Edge or the built-in browser. After opening or selecting the test page, report its tab ID, title, and URL, and continue in that same tab without opening another copy.',
   },
   {
     id: "codex-computer-use",
