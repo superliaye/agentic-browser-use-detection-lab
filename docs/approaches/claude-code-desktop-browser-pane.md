@@ -24,6 +24,13 @@ The verdict means the page is in a Claude agentic browser context; it does not a
 
 In the inspected run, `navigator.webdriver` was `false` and no known Playwright globals were present, so `isGenericAutomationDetected` remained `false`. The extension-specific Claude DOM markers were absent, as expected for the in-app Browser.
 
+## Live Snapshot
+### Launch new
+<img width="1928" height="1378" alt="image" src="https://github.com/user-attachments/assets/34afde42-997b-4295-a27e-b9793c13dff3" />
+
+### Update loaded tab
+<img width="1938" height="1175" alt="image" src="https://github.com/user-attachments/assets/ba7b573f-fb86-4a38-9765-e6a55148882e" />
+
 ## Inspection
 
 - Official docs inspected: 2026-08-22.
