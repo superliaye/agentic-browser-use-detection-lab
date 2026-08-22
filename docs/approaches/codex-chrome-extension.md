@@ -29,6 +29,9 @@ The signal is `detected_now` while the root is present and `detected_earlier_in_
 
 The inspected flow reported `navigator.webdriver === false` and no known Playwright globals, so no generic automation signal was detected. The lab does not treat extension installation as agentic use and does not probe the extension's web-accessible cursor asset.
 
+## Live Snapshot
+<img width="1693" height="1212" alt="image" src="https://github.com/user-attachments/assets/ec6fb3a6-da36-4c2a-8e0c-e7ee1f18cf4b" />
+
 ## Inspection
 
 - Official docs inspected: 2026-08-22.
