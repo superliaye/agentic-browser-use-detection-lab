@@ -43,7 +43,7 @@ Sources were inspected on 2026-08-22. The Codex built-in Browser flow was manual
 | Approach | Modes | Agentic detection | Generic automation detection | Current limitation | Notes |
 | --- | --- | --- | --- | --- | --- |
 | [Claude in Chrome side panel](docs/approaches/claude-in-chrome-side-panel.md) | Launch, takeover | Marker-triggered | Conditional | Coverage across current extension versions is not established | Active marker transition manually observed |
-| [Claude Desktop + Chrome connector](docs/approaches/claude-desktop-chrome-connector.md) | Launch, takeover | Marker-triggered | Conditional | Marker coverage not revalidated in the current extension | Uses Claude in Chrome |
+| [Claude Desktop + Chrome connector](docs/approaches/claude-desktop-chrome-connector.md) | Launch, takeover | Marker-triggered | Conditional | Versions beyond Desktop 1.3109.9 and extension 1.0.85 are unverified | Uses Claude in Chrome |
 | [Claude Code + Chrome](docs/approaches/claude-code-chrome.md) | Launch | Marker-triggered | Conditional | Marker coverage not revalidated in the current extension | Official integration opens task tabs |
 | [Claude Code Desktop Browser pane](docs/approaches/claude-code-desktop-browser-pane.md) | Launch, takeover | No known signal | No known signal | Product flow not manually inspected | Separate in-app profile |
 | [Claude Code Computer Use](docs/approaches/claude-computer-use.md) | None | Not testable | Not testable | Browsers are currently view-only in the CLI flow | Listed to make the limitation explicit |
