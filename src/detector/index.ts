@@ -15,6 +15,7 @@ export type {
   DetectionEvidenceValue,
   DetectionProbe,
   DetectionProbeObservation,
+  DetectionProbeObservationStatus,
   DetectionResult,
   DetectionResultListener,
   DetectionSignal,

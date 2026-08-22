@@ -54,14 +54,20 @@ function runAgenticTransition() {
   const detector = createAgenticUseDetector(probes, environment);
 
   detector.start();
+  const initialResult = detector.getResult();
   agenticDetected = true;
   automationDetected = true;
   triggerDocumentChange();
+  const detectedResult = detector.getResult();
   agenticDetected = false;
   automationDetected = false;
   triggerDocumentChange();
 
-  return detector.getResult();
+  return {
+    detectedResult,
+    initialResult,
+    previousDetectionResult: detector.getResult(),
+  };
 }
 
 function runThrowingProbeBesideWebdriverProbe() {
@@ -142,10 +148,24 @@ function runInitialSnapshot() {
 }
 
 test("latches agentic and generic automation detection", () => {
-  const result = runAgenticTransition();
+  const { previousDetectionResult } = runAgenticTransition();
 
-  assert.equal(result.isAgenticUseDetected, true);
-  assert.equal(result.isGenericAutomationDetected, true);
+  assert.equal(previousDetectionResult.isAgenticUseDetected, true);
+  assert.equal(previousDetectionResult.isGenericAutomationDetected, true);
+});
+
+test("distinguishes current detection from earlier detection in the session", () => {
+  const { detectedResult, initialResult, previousDetectionResult } =
+    runAgenticTransition();
+  const findAgenticSignal = (result) =>
+    result.signals.find(({ id }) => id === "agentic");
+
+  assert.equal(findAgenticSignal(initialResult)?.status, "not_detected");
+  assert.equal(findAgenticSignal(detectedResult)?.status, "detected_now");
+  assert.equal(
+    findAgenticSignal(previousDetectionResult)?.status,
+    "detected_earlier_in_session",
+  );
 });
 
 test("detects the Codex built-in Browser marker as agentic use only", () => {

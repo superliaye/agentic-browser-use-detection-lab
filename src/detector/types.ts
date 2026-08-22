@@ -1,5 +1,12 @@
-export type DetectionSignalStatus =
+export type DetectionProbeObservationStatus =
   | "detected"
+  | "not_detected"
+  | "unsupported"
+  | "error";
+
+export type DetectionSignalStatus =
+  | "detected_now"
+  | "detected_earlier_in_session"
   | "not_detected"
   | "unsupported"
   | "error";
@@ -9,7 +16,7 @@ export type DetectionConclusion = "agentic_use" | "automation" | "nothing";
 export type DetectionEvidenceValue = string | number | boolean;
 
 export interface DetectionProbeObservation {
-  readonly status: DetectionSignalStatus;
+  readonly status: DetectionProbeObservationStatus;
   readonly evidence: Readonly<Record<string, DetectionEvidenceValue>>;
 }
 

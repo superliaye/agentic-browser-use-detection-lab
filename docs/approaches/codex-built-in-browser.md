@@ -16,6 +16,8 @@ Supported modes: **launch** and **takeover**.
 
 The detector watches `#codex-browser-sidebar-comments-root`, a product-owned element injected into pages loaded in the Codex built-in Browser. Its presence sets `isAgenticUseDetected` because the page is loaded or viewed through Codex's agentic browser context. It does not prove that Codex caused a particular click.
 
+The signal is `detected_now` while the element is present and `detected_earlier_in_session` if it disappears after being observed. The aggregate agentic-use boolean stays `true` for the detector session.
+
 In the inspected run, `navigator.webdriver` was `false` and neither Playwright global was present, so `isGenericAutomationDetected` remained `false`.
 
 ## Live snapshot

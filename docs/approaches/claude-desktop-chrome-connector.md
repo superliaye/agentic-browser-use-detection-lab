@@ -14,7 +14,7 @@ Supported modes: **launch** and **takeover**.
 
 ## Detection
 
-Because this flow uses Claude in Chrome, the detector watches the same active and retained DOM markers. A marker deterministically attributes the observed artifact to Claude agent control. Generic automation is reported separately only when a WebDriver or Playwright signal appears.
+Because this flow uses Claude in Chrome, the detector watches the same active and retained DOM markers. A marker deterministically attributes the observed artifact to Claude agent control. A signal distinguishes a marker present now from one observed earlier in the detector session; `isAgenticUseDetected` remains latched after either marker is observed. Generic automation is reported separately only when a WebDriver or Playwright signal appears.
 
 Coverage across current Desktop and extension versions is unverified. A negative result does not distinguish a missed marker from no agent use.
 

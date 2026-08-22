@@ -14,9 +14,18 @@ interface DetectionResult {
   readonly isGenericAutomationDetected: boolean;
   readonly signals: readonly DetectionSignal[];
 }
+
+type DetectionSignalStatus =
+  | "detected_now"
+  | "detected_earlier_in_session"
+  | "not_detected"
+  | "unsupported"
+  | "error";
 ```
 
-There are no likelihood scores. Each boolean latches independently: product-specific signals set `isAgenticUseDetected`, while generic WebDriver or Playwright signals set `isGenericAutomationDetected`. A generic automation signal does not determine whether an agent or another automation harness caused it. “Deterministic” assumes normal, non-adversarial tooling; page-visible state can be removed or forged.
+There are no likelihood scores. Each boolean latches independently: product-specific signals set `isAgenticUseDetected`, while generic WebDriver or Playwright signals set `isGenericAutomationDetected`. Per-signal status distinguishes evidence present during the latest inspection from evidence seen earlier in the detector session. `evidence` always contains the latest inspection, including when a previously seen marker is now absent. `unsupported` and `error` describe the latest inspection and take precedence over session history.
+
+A generic automation signal does not determine whether an agent or another automation harness caused it. “Deterministic” assumes normal, non-adversarial tooling; page-visible state can be removed or forged.
 
 The current probes inspect:
 
@@ -33,7 +42,7 @@ Sources were inspected on 2026-08-22. The Codex built-in Browser flow was manual
 
 | Approach | Modes | Agentic detection | Generic automation detection | Current limitation | Notes |
 | --- | --- | --- | --- | --- | --- |
-| [Claude in Chrome side panel](docs/approaches/claude-in-chrome-side-panel.md) | Launch, takeover | Marker-triggered | Conditional | Marker coverage not revalidated in the current extension | CHEQ-reported DOM artifacts |
+| [Claude in Chrome side panel](docs/approaches/claude-in-chrome-side-panel.md) | Launch, takeover | Marker-triggered | Conditional | Coverage across current extension versions is not established | Active marker transition manually observed |
 | [Claude Desktop + Chrome connector](docs/approaches/claude-desktop-chrome-connector.md) | Launch, takeover | Marker-triggered | Conditional | Marker coverage not revalidated in the current extension | Uses Claude in Chrome |
 | [Claude Code + Chrome](docs/approaches/claude-code-chrome.md) | Launch | Marker-triggered | Conditional | Marker coverage not revalidated in the current extension | Official integration opens task tabs |
 | [Claude Code Desktop Browser pane](docs/approaches/claude-code-desktop-browser-pane.md) | Launch, takeover | No known signal | No known signal | Product flow not manually inspected | Separate in-app profile |

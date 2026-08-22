@@ -553,9 +553,14 @@ tbody tr:last-child td {
   padding: 0.35rem 0.5rem;
 }
 
-.signal-status--detected {
+.signal-status--detected_now {
   color: #fff;
   background: var(--accent-dark);
+}
+
+.signal-status--detected_earlier_in_session {
+  color: var(--green);
+  background: var(--green-soft);
 }
 
 .signal-status--not_detected {

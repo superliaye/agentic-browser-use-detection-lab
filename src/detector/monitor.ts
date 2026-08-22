@@ -3,10 +3,19 @@ import type {
   AgenticUseDetector,
   DetectionEnvironment,
   DetectionProbe,
+  DetectionProbeObservationStatus,
   DetectionResult,
   DetectionResultListener,
   DetectionSignal,
 } from "./types.js";
+
+interface ProbeInspection {
+  readonly id: string;
+  readonly area: string;
+  readonly status: DetectionProbeObservationStatus;
+  readonly proves: DetectionSignal["proves"];
+  readonly evidence: DetectionSignal["evidence"];
+}
 
 function freezeSignal(signal: DetectionSignal): DetectionSignal {
   return Object.freeze({
@@ -28,7 +37,7 @@ const INITIAL_RESULT = freezeResult({
   signals: [],
 });
 
-function inspectProbe(probe: DetectionProbe, environment: DetectionEnvironment): DetectionSignal {
+function inspectProbe(probe: DetectionProbe, environment: DetectionEnvironment): ProbeInspection {
   try {
     const observation = probe.inspect(environment);
     return {
@@ -54,6 +63,7 @@ export function createAgenticUseDetector(
   environment: DetectionEnvironment = createBrowserDetectionEnvironment(),
 ): AgenticUseDetector {
   const listeners = new Set<DetectionResultListener>();
+  const detectedSignalIds = new Set<string>();
   let currentResult = INITIAL_RESULT;
   let currentResultKey = JSON.stringify(currentResult);
   let isStarted = false;
@@ -65,12 +75,30 @@ export function createAgenticUseDetector(
       return;
     }
 
-    const signals = probes.map((probe) => inspectProbe(probe, environment));
+    const signals = probes.map((probe): DetectionSignal => {
+      const inspection = inspectProbe(probe, environment);
+
+      if (inspection.status === "detected") {
+        detectedSignalIds.add(inspection.id);
+      }
+
+      const status =
+        inspection.status === "detected"
+          ? "detected_now"
+          : inspection.status === "not_detected" && detectedSignalIds.has(inspection.id)
+            ? "detected_earlier_in_session"
+            : inspection.status;
+
+      return {
+        ...inspection,
+        status,
+      };
+    });
     const agenticUseObserved = signals.some(
-      (signal) => signal.status === "detected" && signal.proves === "agentic_use",
+      (signal) => signal.status === "detected_now" && signal.proves === "agentic_use",
     );
     const genericAutomationObserved = signals.some(
-      (signal) => signal.status === "detected" && signal.proves === "automation",
+      (signal) => signal.status === "detected_now" && signal.proves === "automation",
     );
     const nextResult = freezeResult({
       isAgenticUseDetected: currentResult.isAgenticUseDetected || agenticUseObserved,
