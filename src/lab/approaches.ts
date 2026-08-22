@@ -134,15 +134,15 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
   },
   {
     id: "claude-computer-use",
-    name: "Claude Code Computer Use (browser view-only)",
+    name: "Claude Desktop Computer Use (browser view-only)",
     provider: "Anthropic",
-    summary: "The CLI computer-use server can see browsers, but Anthropic currently limits them to view-only control.",
+    summary: "Claude Desktop Computer Use can inspect browsers, but its browser permission tier is view-only.",
     modes: [],
     instructions: [],
     docsPath: "docs/approaches/claude-computer-use.md",
     expectedSignalIds: [],
     unavailableReason:
-      "This flow cannot click the counter: current Claude Code CLI documentation classifies browsers as view-only for Computer Use.",
+      "This flow cannot click the counter: Claude Desktop Computer Use classifies browsers as view-only.",
   },
   {
     id: "codex-built-in-browser",

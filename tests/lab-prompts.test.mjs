@@ -60,7 +60,7 @@ test("unsupported modes are rejected", () => {
   );
 });
 
-test("Claude Code Computer Use is represented as browser view-only", () => {
+test("Claude Desktop Computer Use is represented as browser view-only", () => {
   const approach = getApproach("claude-computer-use");
 
   assert.deepEqual(approach.modes, []);
