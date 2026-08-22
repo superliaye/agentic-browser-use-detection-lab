@@ -15,14 +15,20 @@ Supported modes: **launch** and **takeover**.
 
 ## Detection
 
-No product-specific page-visible signal is currently known. The existing Claude extension markers are not assumed to apply to the in-app Browser. Generic automation probes may fire in a future product test, but that is unverified.
+The detector concludes agentic use when either of these independent signals is present:
 
-This is an exhausted-current-options conclusion, not proof that the flow is fundamentally undetectable.
+- The browser user agent contains `Claude/<version>`.
+- Both `window.__claudeElementMap` and `window.__claudeRefCounter` exist. The observed runtime also exposed `window.__claudeElementReverseMap`, which is included as evidence but is not required.
+
+The verdict means the page is in a Claude agentic browser context; it does not attribute a particular click to Claude. An `Electron/<version>` user-agent token is reported separately as informational runtime evidence and does not set either aggregate boolean.
+
+In the inspected run, `navigator.webdriver` was `false` and no known Playwright globals were present, so `isGenericAutomationDetected` remained `false`. The extension-specific Claude DOM markers were absent, as expected for the in-app Browser.
 
 ## Inspection
 
 - Official docs inspected: 2026-08-22.
-- Product test: not manually performed.
-- Desktop, Chromium, and OS versions: not recorded.
+- Product test: Claude opened the lab and operated its counter on 2026-08-22.
+- User-agent product token: Claude 1.34493.1.
+- Runtime: Chrome 148.0.7778.280; Electron 42.9.2; `Windows NT 10.0` platform token; MSIX installation.
 
-Source: [Anthropic — Claude Code Desktop](https://code.claude.com/docs/en/desktop#preview-your-app) and [Browse external sites](https://code.claude.com/docs/en/desktop#browse-external-sites).
+Sources: [Anthropic — Claude Code Desktop](https://code.claude.com/docs/en/desktop#preview-your-app), [Browse external sites](https://code.claude.com/docs/en/desktop#browse-external-sites), and [Anthropic browser-use ref-tracking implementation](https://github.com/anthropics/claude-quickstarts/blob/5264b729deda905dba3e5402d717bebed000325c/browser-use-demo/browser_use_demo/browser_tool_utils/browser_dom_script.js). See [signal details](../detection/claude-desktop-browser-signals.md).

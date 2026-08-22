@@ -6,14 +6,16 @@ import {
   defaultProbes,
 } from "../.test-dist/src/detector/index.js";
 
-function createEnvironment() {
+function createEnvironment({ userAgent, windowProperties = [] } = {}) {
   let documentChangeListener;
   let disposerCount = 0;
+  const windowPropertySet = new Set(windowProperties);
 
   return {
     environment: {
+      getUserAgent: () => userAgent,
       getNavigatorWebdriver: () => false,
-      hasWindowProperty: () => false,
+      hasWindowProperty: (name) => windowPropertySet.has(name),
       hasElement: () => false,
       subscribeToDocumentChanges: (listener) => {
         documentChangeListener = listener;
@@ -25,6 +27,14 @@ function createEnvironment() {
     triggerDocumentChange: () => documentChangeListener?.(),
     getDisposerCount: () => disposerCount,
   };
+}
+
+function runDefaultDetection(environmentOptions) {
+  const { environment } = createEnvironment(environmentOptions);
+  const detector = createAgenticUseDetector(defaultProbes, environment);
+
+  detector.start();
+  return detector.getResult();
 }
 
 function runAgenticTransition() {
@@ -173,6 +183,50 @@ test("detects the Codex built-in Browser marker as agentic use only", () => {
 
   assert.equal(result.isAgenticUseDetected, true);
   assert.equal(result.isGenericAutomationDetected, false);
+});
+
+test("detects the Claude Desktop Browser user agent as agentic use", () => {
+  const result = runDefaultDetection({
+    userAgent:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)Claude/1.34493.1 Chrome/148.0.7778.280 Electron/42.9.2 Safari/537.36 MSIX",
+  });
+
+  assert.equal(result.isAgenticUseDetected, true);
+  assert.equal(result.isGenericAutomationDetected, false);
+  assert.equal(
+    result.signals.find(({ id }) => id === "claude-desktop-browser-user-agent")
+      ?.status,
+    "detected_now",
+  );
+});
+
+test("detects Claude ref-tracking globals as agentic use", () => {
+  const result = runDefaultDetection({
+    windowProperties: [
+      "__claudeElementMap",
+      "__claudeElementReverseMap",
+      "__claudeRefCounter",
+    ],
+  });
+
+  assert.equal(result.isAgenticUseDetected, true);
+  assert.equal(result.isGenericAutomationDetected, false);
+  assert.equal(
+    result.signals.find(({ id }) => id === "claude-ref-tracking-globals")?.status,
+    "detected_now",
+  );
+});
+
+test("reports Electron without treating it as agentic use or automation", () => {
+  const result = runDefaultDetection({
+    userAgent: "Mozilla/5.0 Chrome/148.0.7778.280 Electron/42.9.2 Safari/537.36",
+  });
+  const signal = result.signals.find(({ id }) => id === "electron-user-agent");
+
+  assert.equal(result.isAgenticUseDetected, false);
+  assert.equal(result.isGenericAutomationDetected, false);
+  assert.equal(signal?.status, "detected_now");
+  assert.equal(signal?.proves, "nothing");
 });
 
 test("reports probe failures without stopping sibling probes", () => {

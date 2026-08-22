@@ -21,6 +21,7 @@ export interface DetectionProbeObservation {
 }
 
 export interface DetectionEnvironment {
+  getUserAgent(): string | undefined;
   getNavigatorWebdriver(): boolean | undefined;
   hasWindowProperty(name: string): boolean;
   hasElement(selector: string): boolean;

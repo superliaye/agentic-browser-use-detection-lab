@@ -2,6 +2,12 @@ import type { DetectionEnvironment } from "./types.js";
 
 export function createBrowserDetectionEnvironment(): DetectionEnvironment {
   return {
+    getUserAgent(): string | undefined {
+      return typeof navigator.userAgent === "string"
+        ? navigator.userAgent
+        : undefined;
+    },
+
     getNavigatorWebdriver(): boolean | undefined {
       return typeof navigator.webdriver === "boolean" ? navigator.webdriver : undefined;
     },

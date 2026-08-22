@@ -2,9 +2,12 @@ export { createBrowserDetectionEnvironment } from "./environment.js";
 export { createAgenticUseDetector } from "./monitor.js";
 export {
   claudeActiveControlProbe,
+  claudeDesktopBrowserUserAgentProbe,
   claudePriorControlProbe,
+  claudeRefTrackingGlobalsProbe,
   codexBuiltInBrowserProbe,
   defaultProbes,
+  electronUserAgentProbe,
   playwrightWindowGlobalsProbe,
   webdriverProbe,
 } from "./probes/index.js";

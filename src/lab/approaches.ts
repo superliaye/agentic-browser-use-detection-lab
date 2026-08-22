@@ -124,7 +124,11 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       },
     ],
     docsPath: "docs/approaches/claude-code-desktop-browser-pane.md",
-    expectedSignalIds: [],
+    expectedSignalIds: [
+      "claude-desktop-browser-user-agent",
+      "claude-ref-tracking-globals",
+      "electron-user-agent",
+    ],
   },
   {
     id: "claude-computer-use",

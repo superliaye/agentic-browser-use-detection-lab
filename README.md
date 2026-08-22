@@ -30,6 +30,9 @@ A generic automation signal does not determine whether an agent or another autom
 The current probes inspect:
 
 - Claude in Chrome active and retained DOM markers.
+- Claude Desktop's `Claude/<version>` user-agent token.
+- Claude accessibility ref-tracking globals.
+- Electron's user-agent token as informational runtime evidence only.
 - The Codex built-in Browser context root.
 - `navigator.webdriver`.
 - Playwright's `window.__playwright__binding__` and `window.__pwInitScripts` globals.
@@ -45,7 +48,7 @@ Sources were inspected on 2026-08-22. The Codex built-in Browser flow was manual
 | [Claude in Chrome side panel](docs/approaches/claude-in-chrome-side-panel.md) | Launch, takeover | Marker-triggered | Conditional | Coverage across current extension versions is not established | Active marker transition manually observed |
 | [Claude Desktop + Chrome connector](docs/approaches/claude-desktop-chrome-connector.md) | Launch, takeover | Marker-triggered | Conditional | Versions beyond Desktop 1.3109.9 and extension 1.0.85 are unverified | Uses Claude in Chrome |
 | [Claude Code + Chrome](docs/approaches/claude-code-chrome.md) | Launch | Marker-triggered | Conditional | Versions beyond Claude Code 2.1.240 and extension 1.0.85 are unverified | Official integration opens task tabs |
-| [Claude Code Desktop Browser pane](docs/approaches/claude-code-desktop-browser-pane.md) | Launch, takeover | No known signal | No known signal | Product flow not manually inspected | Separate in-app profile |
+| [Claude Code Desktop Browser pane](docs/approaches/claude-code-desktop-browser-pane.md) | Launch, takeover | UA or ref globals | Not observed | Signals inspected only in Claude 1.34493.1 | Electron runtime; separate in-app profile |
 | [Claude Code Computer Use](docs/approaches/claude-computer-use.md) | None | Not testable | Not testable | Browsers are currently view-only in the CLI flow | Listed to make the limitation explicit |
 | [Codex built-in Browser](docs/approaches/codex-built-in-browser.md) | Launch, takeover | Marker-triggered | Not observed | Marker inspected only in Codex 26.818.41509 | `#codex-browser-sidebar-comments-root` |
 | [Codex Chrome extension](docs/approaches/codex-chrome-extension.md) | Launch, takeover | No known signal | Untested | No product-specific page marker is known | Uses the user's Chrome profile |

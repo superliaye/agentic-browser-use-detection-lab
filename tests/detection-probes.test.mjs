@@ -8,8 +8,9 @@ import {
   webdriverProbe,
 } from "../.test-dist/src/detector/probes/index.js";
 
-function createEnvironment({ selector, webdriver, windowProperty } = {}) {
+function createEnvironment({ selector, userAgent, webdriver, windowProperty } = {}) {
   return {
+    getUserAgent: () => userAgent,
     getNavigatorWebdriver: () => webdriver,
     hasWindowProperty: (name) => name === windowProperty,
     hasElement: (candidate) => candidate === selector,
