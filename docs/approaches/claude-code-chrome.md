@@ -17,6 +17,9 @@ Supported mode: **launch**. The official flow opens new tabs for browser tasks.
 
 The detector watches the Claude active-control and retained-style markers. A signal distinguishes a marker present now from one observed earlier in the detector session; either state keeps `isAgenticUseDetected` latched. Generic automation is reported separately only when a WebDriver or Playwright signal appears. The lab has not established that every current Claude Code + Chrome action emits either Claude marker.
 
+## Live Snapshot
+<img width="2020" height="964" alt="image" src="https://github.com/user-attachments/assets/1bf2f3c1-bd76-4da4-be16-73f5c680e16f" />
+
 ## Inspection
 
 - Official docs inspected: 2026-08-22.
