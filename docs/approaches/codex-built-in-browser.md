@@ -18,6 +18,10 @@ The detector watches `#codex-browser-sidebar-comments-root`, a product-owned ele
 
 In the inspected run, `navigator.webdriver` was `false` and neither Playwright global was present, so `isGenericAutomationDetected` remained `false`.
 
+## Live snapshot
+<img width="1967" height="1062" alt="image" src="https://github.com/user-attachments/assets/1d2788c7-6b6a-4212-a274-c314f8823081" />
+
+
 ## Inspection
 
 - Official docs inspected: 2026-08-22.
