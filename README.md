@@ -11,16 +11,17 @@ The page is the test guide, interaction target, and live result viewer. Select a
 ```ts
 interface DetectionResult {
   readonly isAgenticUseDetected: boolean;
-  readonly isAutomationDetected: boolean;
+  readonly isGenericAutomationDetected: boolean;
   readonly signals: readonly DetectionSignal[];
 }
 ```
 
-There are no likelihood scores. A boolean latches to `true` only after a runtime signal deterministically proves agentic use or browser automation for the detector instance. “Deterministic” assumes normal, non-adversarial tooling; page-visible state can be removed or forged.
+There are no likelihood scores. Each boolean latches independently: product-specific signals set `isAgenticUseDetected`, while generic WebDriver or Playwright signals set `isGenericAutomationDetected`. A generic automation signal does not determine whether an agent or another automation harness caused it. “Deterministic” assumes normal, non-adversarial tooling; page-visible state can be removed or forged.
 
 The current probes inspect:
 
 - Claude in Chrome active and retained DOM markers.
+- The Codex built-in Browser context root.
 - `navigator.webdriver`.
 - Playwright's `window.__playwright__binding__` and `window.__pwInitScripts` globals.
 
@@ -28,16 +29,16 @@ See [detection mechanisms](docs/detection/) and [browser observability limits](d
 
 ## Approach catalog
 
-Sources were inspected on 2026-08-22. No Claude or Codex product flow was manually executed for the initial conclusions; each page says what is source-grounded, conditionally detectable, or still untested.
+Sources were inspected on 2026-08-22. The Codex built-in Browser flow was manually inspected in version 26.818.41509; each approach page records whether the remaining conclusions are source-grounded, conditionally detectable, or still untested.
 
-| Approach | Modes | Agentic detection | Automation detection | Current limitation | Notes |
+| Approach | Modes | Agentic detection | Generic automation detection | Current limitation | Notes |
 | --- | --- | --- | --- | --- | --- |
-| [Claude in Chrome side panel](docs/approaches/claude-in-chrome-side-panel.md) | Launch, takeover | Marker-triggered | Yes when marker appears | Marker coverage not revalidated in the current extension | CHEQ-reported DOM artifacts |
-| [Claude Desktop + Chrome connector](docs/approaches/claude-desktop-chrome-connector.md) | Launch, takeover | Marker-triggered | Yes when marker appears | Marker coverage not revalidated in the current extension | Uses Claude in Chrome |
-| [Claude Code + Chrome](docs/approaches/claude-code-chrome.md) | Launch | Marker-triggered | Yes when marker appears | Marker coverage not revalidated in the current extension | Official integration opens task tabs |
+| [Claude in Chrome side panel](docs/approaches/claude-in-chrome-side-panel.md) | Launch, takeover | Marker-triggered | Conditional | Marker coverage not revalidated in the current extension | CHEQ-reported DOM artifacts |
+| [Claude Desktop + Chrome connector](docs/approaches/claude-desktop-chrome-connector.md) | Launch, takeover | Marker-triggered | Conditional | Marker coverage not revalidated in the current extension | Uses Claude in Chrome |
+| [Claude Code + Chrome](docs/approaches/claude-code-chrome.md) | Launch | Marker-triggered | Conditional | Marker coverage not revalidated in the current extension | Official integration opens task tabs |
 | [Claude Code Desktop Browser pane](docs/approaches/claude-code-desktop-browser-pane.md) | Launch, takeover | No known signal | No known signal | Product flow not manually inspected | Separate in-app profile |
 | [Claude Code Computer Use](docs/approaches/claude-computer-use.md) | None | Not testable | Not testable | Browsers are currently view-only in the CLI flow | Listed to make the limitation explicit |
-| [Codex built-in Browser](docs/approaches/codex-built-in-browser.md) | Launch, takeover | No known signal | Untested | Product flow not manually inspected | ChatGPT desktop app only |
+| [Codex built-in Browser](docs/approaches/codex-built-in-browser.md) | Launch, takeover | Marker-triggered | Not observed | Marker inspected only in Codex 26.818.41509 | `#codex-browser-sidebar-comments-root` |
 | [Codex Chrome extension](docs/approaches/codex-chrome-extension.md) | Launch, takeover | No known signal | Untested | No product-specific page marker is known | Uses the user's Chrome profile |
 | [Codex Computer Use](docs/approaches/codex-computer-use.md) | Launch, takeover | No known signal | Untested | Native input may be page-unobservable | macOS and Windows desktop flow |
 | [Claude Code + Playwright MCP](docs/approaches/claude-code-playwright-mcp.md) | Launch | No | Conditional | Generic signals do not identify Claude | WebDriver or Playwright globals |

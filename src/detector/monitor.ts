@@ -24,7 +24,7 @@ function freezeResult(result: DetectionResult): DetectionResult {
 
 const INITIAL_RESULT = freezeResult({
   isAgenticUseDetected: false,
-  isAutomationDetected: false,
+  isGenericAutomationDetected: false,
   signals: [],
 });
 
@@ -69,14 +69,13 @@ export function createAgenticUseDetector(
     const agenticUseObserved = signals.some(
       (signal) => signal.status === "detected" && signal.proves === "agentic_use",
     );
-    const automationObserved = signals.some(
-      (signal) =>
-        signal.status === "detected" &&
-        (signal.proves === "agentic_use" || signal.proves === "automation"),
+    const genericAutomationObserved = signals.some(
+      (signal) => signal.status === "detected" && signal.proves === "automation",
     );
     const nextResult = freezeResult({
       isAgenticUseDetected: currentResult.isAgenticUseDetected || agenticUseObserved,
-      isAutomationDetected: currentResult.isAutomationDetected || automationObserved,
+      isGenericAutomationDetected:
+        currentResult.isGenericAutomationDetected || genericAutomationObserved,
       signals,
     });
     const nextResultKey = JSON.stringify(nextResult);

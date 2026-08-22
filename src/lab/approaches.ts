@@ -161,7 +161,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       },
     ],
     docsPath: "docs/approaches/codex-built-in-browser.md",
-    expectedSignalIds: [],
+    expectedSignalIds: ["codex-built-in-browser-context"],
   },
   {
     id: "codex-chrome-extension",

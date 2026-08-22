@@ -15,7 +15,7 @@ Supported modes: **launch** and **takeover**.
 
 ## Detection
 
-The detector concludes agentic use if `#claude-agent-stop-container` or `#claude-agent-animation-styles` appears. The first is reported during active control; the second is reported to persist after control. Either also concludes automation.
+The detector concludes agentic use if `#claude-agent-stop-container` or `#claude-agent-animation-styles` appears. The first is reported during active control; the second is reported to persist after control. Generic automation is reported separately only when a WebDriver or Playwright signal appears.
 
 No marker means only “not detected.” The markers come from third-party reverse engineering and were not manually revalidated against the current extension in this lab.
 

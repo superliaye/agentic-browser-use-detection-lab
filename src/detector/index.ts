@@ -3,6 +3,7 @@ export { createAgenticUseDetector } from "./monitor.js";
 export {
   claudeActiveControlProbe,
   claudePriorControlProbe,
+  codexBuiltInBrowserProbe,
   defaultProbes,
   playwrightWindowGlobalsProbe,
   webdriverProbe,

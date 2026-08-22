@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { createAgenticUseDetector } from "../.test-dist/src/detector/index.js";
+import {
+  createAgenticUseDetector,
+  defaultProbes,
+} from "../.test-dist/src/detector/index.js";
 
 function createEnvironment() {
   let documentChangeListener;
@@ -85,6 +88,16 @@ function runThrowingProbeBesideWebdriverProbe() {
   return detector.getResult();
 }
 
+function runCodexBuiltInBrowserDetection() {
+  const { environment } = createEnvironment();
+  environment.hasElement = (selector) =>
+    selector === "#codex-browser-sidebar-comments-root";
+  const detector = createAgenticUseDetector(defaultProbes, environment);
+
+  detector.start();
+  return detector.getResult();
+}
+
 function runStoppedDetectorTransition() {
   const { environment, triggerDocumentChange, getDisposerCount } = createEnvironment();
   const detector = createAgenticUseDetector(
@@ -128,18 +141,25 @@ function runInitialSnapshot() {
   return detector.getResult();
 }
 
-test("latches agentic and automation detection", () => {
+test("latches agentic and generic automation detection", () => {
   const result = runAgenticTransition();
 
   assert.equal(result.isAgenticUseDetected, true);
-  assert.equal(result.isAutomationDetected, true);
+  assert.equal(result.isGenericAutomationDetected, true);
+});
+
+test("detects the Codex built-in Browser marker as agentic use only", () => {
+  const result = runCodexBuiltInBrowserDetection();
+
+  assert.equal(result.isAgenticUseDetected, true);
+  assert.equal(result.isGenericAutomationDetected, false);
 });
 
 test("reports probe failures without stopping sibling probes", () => {
   const result = runThrowingProbeBesideWebdriverProbe();
 
   assert.equal(result.signals.find(({ id }) => id === "throwing")?.status, "error");
-  assert.equal(result.isAutomationDetected, true);
+  assert.equal(result.isGenericAutomationDetected, true);
 });
 
 test("stops environment observation and later callbacks", () => {

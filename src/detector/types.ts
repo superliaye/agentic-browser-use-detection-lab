@@ -37,7 +37,7 @@ export interface DetectionSignal {
 
 export interface DetectionResult {
   readonly isAgenticUseDetected: boolean;
-  readonly isAutomationDetected: boolean;
+  readonly isGenericAutomationDetected: boolean;
   readonly signals: readonly DetectionSignal[];
 }
 

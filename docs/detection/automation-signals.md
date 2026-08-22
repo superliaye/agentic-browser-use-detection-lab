@@ -9,6 +9,8 @@ The detector includes two narrow automation probes:
 
 Neither signal proves Claude or Codex. They may be absent when a tool connects to an existing browser, changes launch configuration, or does not expose the inspected artifact. The detector deliberately excludes user-agent, timing, mouse-path, and typing heuristics because the public contract has no probability score.
 
+These signals set `isGenericAutomationDetected` independently from `isAgenticUseDetected`. “Generic” describes the evidence, not the operator: an agent can use Playwright or WebDriver, and a non-agent harness can expose the same signals.
+
 Sources inspected 2026-08-22:
 
 - [MDN — `navigator.webdriver`](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/webdriver)

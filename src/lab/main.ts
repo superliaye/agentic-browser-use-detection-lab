@@ -44,13 +44,13 @@ app.innerHTML = `
           <h2>Agentic use</h2>
           <p id="agentic-verdict-detail">No deterministic agent-specific signal observed.</p>
         </article>
-        <article class="verdict-card" id="automation-verdict-card">
+        <article class="verdict-card" id="generic-automation-verdict-card">
           <div class="verdict-heading">
             <span class="verdict-index">02</span>
-            <span class="status-pill" id="automation-verdict-value">Not detected</span>
+            <span class="status-pill" id="generic-automation-verdict-value">Not detected</span>
           </div>
-          <h2>Automation</h2>
-          <p id="automation-verdict-detail">No deterministic automation signal observed.</p>
+          <h2>Generic automation</h2>
+          <p id="generic-automation-verdict-detail">No deterministic generic automation signal observed.</p>
         </article>
       </section>
 
@@ -190,10 +190,14 @@ const counterOutput = requireElement<HTMLOutputElement>("#counter-output");
 const agenticVerdictCard = requireElement<HTMLElement>("#agentic-verdict-card");
 const agenticVerdictValue = requireElement<HTMLElement>("#agentic-verdict-value");
 const agenticVerdictDetail = requireElement<HTMLParagraphElement>("#agentic-verdict-detail");
-const automationVerdictCard = requireElement<HTMLElement>("#automation-verdict-card");
-const automationVerdictValue = requireElement<HTMLElement>("#automation-verdict-value");
-const automationVerdictDetail = requireElement<HTMLParagraphElement>(
-  "#automation-verdict-detail",
+const genericAutomationVerdictCard = requireElement<HTMLElement>(
+  "#generic-automation-verdict-card",
+);
+const genericAutomationVerdictValue = requireElement<HTMLElement>(
+  "#generic-automation-verdict-value",
+);
+const genericAutomationVerdictDetail = requireElement<HTMLParagraphElement>(
+  "#generic-automation-verdict-detail",
 );
 const signalTableBody = requireElement<HTMLTableSectionElement>("#signal-table-body");
 const resultJson = requireElement<HTMLElement>("#result-json");
@@ -319,12 +323,12 @@ function renderDetection(result: DetectionResult): void {
     "No deterministic agent-specific signal observed.",
   );
   renderVerdict(
-    automationVerdictCard,
-    automationVerdictValue,
-    automationVerdictDetail,
-    result.isAutomationDetected,
-    "A deterministic browser automation signal was observed in this page session.",
-    "No deterministic automation signal observed.",
+    genericAutomationVerdictCard,
+    genericAutomationVerdictValue,
+    genericAutomationVerdictDetail,
+    result.isGenericAutomationDetected,
+    "A deterministic generic automation signal was observed in this page session.",
+    "No deterministic generic automation signal observed.",
   );
 
   signalTableBody.replaceChildren(

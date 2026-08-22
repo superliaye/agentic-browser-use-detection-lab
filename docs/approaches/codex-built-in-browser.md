@@ -14,12 +14,15 @@ Supported modes: **launch** and **takeover**.
 
 ## Detection
 
-No Codex-specific page-visible marker is currently known. Whether the in-app Browser exposes a generic automation signal is untested. This is a current research gap, not a conclusion that the flow is fundamentally page-unobservable.
+The detector watches `#codex-browser-sidebar-comments-root`, a product-owned element injected into pages loaded in the Codex built-in Browser. Its presence sets `isAgenticUseDetected` because the page is loaded or viewed through Codex's agentic browser context. It does not prove that Codex caused a particular click.
+
+In the inspected run, `navigator.webdriver` was `false` and neither Playwright global was present, so `isGenericAutomationDetected` remained `false`.
 
 ## Inspection
 
 - Official docs inspected: 2026-08-22.
-- Product test: not manually performed.
-- ChatGPT desktop, browser engine, and OS versions: not recorded.
+- Product test: Codex opened the lab and incremented the counter on 2026-08-22.
+- Codex version: 26.818.41509.
+- Browser engine and OS versions: not recorded.
 
-Source: [OpenAI — Browser](https://learn.chatgpt.com/docs/browser).
+Sources: [OpenAI — Browser](https://learn.chatgpt.com/docs/browser), [Codex browser marker notes](../detection/codex-browser-marker.md).
