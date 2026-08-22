@@ -21,6 +21,9 @@ The active-control marker was observed while Claude operated the tab. The signal
 
 A marker that remains `not_detected` means only that it was not observed. The markers come from third-party reverse engineering; a manual lab run observed the active-control marker transition, but current-version coverage is not established.
 
+## Live Snapshot
+<img width="1897" height="1134" alt="image" src="https://github.com/user-attachments/assets/49113dc6-3cec-4943-89bc-0a10bb1a7aae" />
+
 ## Inspection
 
 - Sources inspected: 2026-08-22.
