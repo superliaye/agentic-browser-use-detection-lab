@@ -16,9 +16,6 @@ Supported modes: **launch** and **takeover**.
 
 No signal attributes this flow to Claude. A server-launched browser may expose `navigator.webdriver`, which concludes generic automation. A connection to an existing Chrome may expose none of the current probes. CDP alone is not detected; the obsolete `Error.stack` getter is deliberately excluded.
 
-## Live Snapshot
-<img width="1897" height="1134" alt="image" src="https://github.com/user-attachments/assets/49113dc6-3cec-4943-89bc-0a10bb1a7aae" />
-
 ## Inspection
 
 - Official repository and docs inspected: 2026-08-22.
