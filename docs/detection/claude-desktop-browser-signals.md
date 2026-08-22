@@ -12,7 +12,7 @@ For this lab, a page loaded in a Claude agentic browser context counts as agenti
 
 The ref-globals probe also reports whether `window.__claudeElementReverseMap` exists, but does not require it. Anthropic's public browser-use quickstart initializes the element map and ref counter when its accessibility-tree implementation runs; the reverse map was observed in Claude Desktop but is not part of that public implementation.
 
-The signals were observed on 2026-08-22 with this user agent:
+The signals were observed on 2026-08-22 in Claude Desktop 1.34493.1 (255293), with this user agent:
 
 ```text
 Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)Claude/1.34493.1 Chrome/148.0.7778.280 Electron/42.9.2 Safari/537.36 MSIX

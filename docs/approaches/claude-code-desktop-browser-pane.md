@@ -24,18 +24,21 @@ The verdict means the page is in a Claude agentic browser context; it does not a
 
 In the inspected run, `navigator.webdriver` was `false` and no known Playwright globals were present, so `isGenericAutomationDetected` remained `false`. The extension-specific Claude DOM markers were absent, as expected for the in-app Browser.
 
-## Live Snapshot
+## Live snapshot
+
 ### Launch new
-<img width="1928" height="1378" alt="image" src="https://github.com/user-attachments/assets/34afde42-997b-4295-a27e-b9793c13dff3" />
+
+<img width="1928" height="1378" alt="Claude Desktop Browser launch-flow detection snapshot" src="https://github.com/user-attachments/assets/34afde42-997b-4295-a27e-b9793c13dff3" />
 
 ### Update loaded tab
-<img width="1938" height="1175" alt="image" src="https://github.com/user-attachments/assets/ba7b573f-fb86-4a38-9765-e6a55148882e" />
+
+<img width="1938" height="1175" alt="Claude Desktop Browser takeover-flow detection snapshot" src="https://github.com/user-attachments/assets/ba7b573f-fb86-4a38-9765-e6a55148882e" />
 
 ## Inspection
 
 - Official docs inspected: 2026-08-22.
-- Product test: Claude opened the lab and operated its counter on 2026-08-22.
-- User-agent product token: Claude 1.34493.1.
+- Product test: launch and takeover flows detected the Claude browser context on 2026-08-22.
+- Claude Desktop app: 1.34493.1 (255293); user-agent product token: `Claude/1.34493.1`.
 - Runtime: Chrome 148.0.7778.280; Electron 42.9.2; `Windows NT 10.0` platform token; MSIX installation.
 
 Sources: [Anthropic — Claude Code Desktop](https://code.claude.com/docs/en/desktop#preview-your-app), [Browse external sites](https://code.claude.com/docs/en/desktop#browse-external-sites), and [Anthropic browser-use ref-tracking implementation](https://github.com/anthropics/claude-quickstarts/blob/5264b729deda905dba3e5402d717bebed000325c/browser-use-demo/browser_use_demo/browser_tool_utils/browser_dom_script.js). See [signal details](../detection/claude-desktop-browser-signals.md).
