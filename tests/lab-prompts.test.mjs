@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -35,6 +36,16 @@ test("unsupported modes are rejected", () => {
   );
 });
 
+test("Claude Code Computer Use is represented as browser view-only", () => {
+  const approach = getApproach("claude-computer-use");
+
+  assert.deepEqual(approach.modes, []);
+  assert.throws(
+    () => buildTestPrompt(approach, "launch", "https://example.test/"),
+    /does not support launch mode/,
+  );
+});
+
 test("query selections round-trip through a Pages subpath URL", () => {
   const url = new URL(
     buildLaunchUrl(
@@ -50,4 +61,10 @@ test("query selections round-trip through a Pages subpath URL", () => {
 test("catalog exposes twelve distinct Claude and Codex approaches", () => {
   assert.equal(AGENTIC_APPROACHES.length, 12);
   assert.equal(new Set(AGENTIC_APPROACHES.map(({ id }) => id)).size, 12);
+});
+
+test("every catalog documentation link resolves to a repository file", () => {
+  for (const approach of AGENTIC_APPROACHES) {
+    assert.equal(existsSync(approach.docsPath), true, approach.docsPath);
+  }
 });

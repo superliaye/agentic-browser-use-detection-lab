@@ -221,6 +221,13 @@ let selectedMode: EntryMode =
     : selectedApproach.modes[0] ?? "launch";
 
 function renderModeOptions(approach: AgenticApproach): void {
+  modeSelect.disabled = approach.modes.length === 0;
+
+  if (approach.modes.length === 0) {
+    modeSelect.replaceChildren(createOption("", "No browser-operation mode"));
+    return;
+  }
+
   const options = approach.modes.map((mode) =>
     createOption(mode, mode === "launch" ? "Agent launches the page" : "Agent takes over this page"),
   );
@@ -241,6 +248,27 @@ function renderGuide(): void {
     selectedApproach.expectedSignalIds.length === 0
       ? "No deterministic browser-side signal is currently known for this approach."
       : `Signals to watch: ${selectedApproach.expectedSignalIds.join(", ")}`;
+  approachDocs.href = `${REPOSITORY_URL}/blob/main/${selectedApproach.docsPath}`;
+
+  const selectedUrl = new URL(window.location.href);
+  selectedUrl.searchParams.set("approach", selectedApproach.id);
+
+  if (selectedApproach.modes.length === 0) {
+    const limitation =
+      selectedApproach.unavailableReason ?? "This approach has no runnable browser mode.";
+    const item = document.createElement("li");
+    item.textContent = limitation;
+    testSteps.replaceChildren(item);
+    launchUrlBlock.hidden = true;
+    launchUrlValue.textContent = "";
+    testPrompt.value = `No runnable prompt. ${limitation}`;
+    copyPromptButton.disabled = true;
+    selectedUrl.searchParams.delete("mode");
+    window.history.replaceState(null, "", selectedUrl);
+    return;
+  }
+
+  copyPromptButton.disabled = false;
 
   const instructions = getModeInstructions(selectedApproach, selectedMode);
   testSteps.replaceChildren(
@@ -258,10 +286,7 @@ function renderGuide(): void {
   launchUrlBlock.hidden = launchUrl === undefined;
   launchUrlValue.textContent = launchUrl ?? "";
   testPrompt.value = buildTestPrompt(selectedApproach, selectedMode, launchUrl);
-  approachDocs.href = `${REPOSITORY_URL}/blob/main/${selectedApproach.docsPath}`;
 
-  const selectedUrl = new URL(window.location.href);
-  selectedUrl.searchParams.set("approach", selectedApproach.id);
   selectedUrl.searchParams.set("mode", selectedMode);
   window.history.replaceState(null, "", selectedUrl);
 }

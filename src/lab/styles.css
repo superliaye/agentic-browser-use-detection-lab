@@ -409,6 +409,15 @@ pre:focus-visible {
   transform: translateY(-1px);
 }
 
+.copy-button:disabled,
+select:disabled {
+  color: #858b87;
+  border-color: var(--line);
+  background: var(--paper-deep);
+  cursor: not-allowed;
+  transform: none;
+}
+
 .interaction-target {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

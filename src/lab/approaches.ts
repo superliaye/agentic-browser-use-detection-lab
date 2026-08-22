@@ -14,6 +14,7 @@ export interface AgenticApproach {
   readonly instructions: readonly ApproachModeInstructions[];
   readonly docsPath: string;
   readonly expectedSignalIds: readonly string[];
+  readonly unavailableReason?: string;
 }
 
 export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
@@ -127,30 +128,15 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
   },
   {
     id: "claude-computer-use",
-    name: "Claude Code Computer Use",
+    name: "Claude Code Computer Use (browser view-only)",
     provider: "Anthropic",
-    summary: "Claude Code visually operates Chrome through its built-in computer-use MCP server.",
-    modes: ["launch", "takeover"],
-    instructions: [
-      {
-        mode: "launch",
-        steps: [
-          "In an interactive Claude Code session, open `/mcp` and enable the built-in `computer-use` server for the project.",
-          "Grant the operating-system screen and input permissions requested by Claude Code.",
-          "Copy the generated prompt below into Claude Code.",
-        ],
-      },
-      {
-        mode: "takeover",
-        steps: [
-          "Open this lab in a visible Chrome window.",
-          "Enable `computer-use` from `/mcp` in Claude Code and grant its requested permissions.",
-          "Copy the generated prompt below into Claude Code.",
-        ],
-      },
-    ],
+    summary: "The CLI computer-use server can see browsers, but Anthropic currently limits them to view-only control.",
+    modes: [],
+    instructions: [],
     docsPath: "docs/approaches/claude-computer-use.md",
     expectedSignalIds: [],
+    unavailableReason:
+      "This flow cannot click the counter: current Claude Code CLI documentation classifies browsers as view-only for Computer Use.",
   },
   {
     id: "codex-built-in-browser",
