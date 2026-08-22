@@ -346,7 +346,7 @@ pre:focus-visible {
   padding-top: 0.13rem;
 }
 
-.launch-url-block {
+.test-url-block {
   display: grid;
   gap: 0.45rem;
   margin-top: 1.5rem;
@@ -355,18 +355,18 @@ pre:focus-visible {
   background: #eee9dd;
 }
 
-.launch-url-block[hidden] {
+.test-url-block[hidden] {
   display: none;
 }
 
-.launch-url-block span,
+.test-url-block span,
 .prompt-field > span {
   color: var(--muted);
   font-size: 0.72rem;
   font-weight: 700;
 }
 
-.launch-url-block code {
+.test-url-block code {
   overflow-wrap: anywhere;
   font-family: "DM Mono", ui-monospace, monospace;
   font-size: 0.7rem;

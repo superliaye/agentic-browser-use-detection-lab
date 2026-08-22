@@ -5,11 +5,10 @@ import {
 } from "../detector/index.js";
 import {
   AGENTIC_APPROACHES,
-  getModeInstructions,
   type AgenticApproach,
   type EntryMode,
 } from "./approaches.js";
-import { buildLaunchUrl, buildTestPrompt } from "./prompts.js";
+import { buildGuideSteps, buildTestPrompt, buildTestUrl } from "./prompts.js";
 import "./styles.css";
 
 const REPOSITORY_URL = "https://github.com/superliaye/agentic-browser-use-detection-lab";
@@ -80,9 +79,9 @@ app.innerHTML = `
             <ol id="test-steps"></ol>
           </div>
 
-          <div class="launch-url-block" id="launch-url-block">
+          <div class="test-url-block" id="test-url-block">
             <span>Generated test URL</span>
-            <code id="launch-url"></code>
+            <code id="test-url"></code>
           </div>
 
           <label class="prompt-field" for="test-prompt">
@@ -180,8 +179,8 @@ const modeSelect = requireElement<HTMLSelectElement>("#mode-select");
 const approachSummary = requireElement<HTMLParagraphElement>("#approach-summary");
 const expectedSignals = requireElement<HTMLParagraphElement>("#expected-signals");
 const testSteps = requireElement<HTMLOListElement>("#test-steps");
-const launchUrlBlock = requireElement<HTMLDivElement>("#launch-url-block");
-const launchUrlValue = requireElement<HTMLElement>("#launch-url");
+const testUrlBlock = requireElement<HTMLDivElement>("#test-url-block");
+const testUrlValue = requireElement<HTMLElement>("#test-url");
 const testPrompt = requireElement<HTMLTextAreaElement>("#test-prompt");
 const copyPromptButton = requireElement<HTMLButtonElement>("#copy-prompt");
 const approachDocs = requireElement<HTMLAnchorElement>("#approach-docs");
@@ -263,8 +262,8 @@ function renderGuide(): void {
     const item = document.createElement("li");
     item.textContent = limitation;
     testSteps.replaceChildren(item);
-    launchUrlBlock.hidden = true;
-    launchUrlValue.textContent = "";
+    testUrlBlock.hidden = true;
+    testUrlValue.textContent = "";
     testPrompt.value = `No runnable prompt. ${limitation}`;
     copyPromptButton.disabled = true;
     selectedUrl.searchParams.delete("mode");
@@ -274,22 +273,31 @@ function renderGuide(): void {
 
   copyPromptButton.disabled = false;
 
-  const instructions = getModeInstructions(selectedApproach, selectedMode);
+  const generatedTestUrl = buildTestUrl(
+    createCurrentPageBaseUrl(),
+    selectedApproach.id,
+    selectedMode,
+  );
+  const guideSteps = buildGuideSteps(
+    selectedApproach,
+    selectedMode,
+    generatedTestUrl,
+  );
   testSteps.replaceChildren(
-    ...instructions.steps.map((step) => {
+    ...guideSteps.map((step) => {
       const item = document.createElement("li");
       item.textContent = step;
       return item;
     }),
   );
 
-  const launchUrl =
-    selectedMode === "launch"
-      ? buildLaunchUrl(createCurrentPageBaseUrl(), selectedApproach.id)
-      : undefined;
-  launchUrlBlock.hidden = launchUrl === undefined;
-  launchUrlValue.textContent = launchUrl ?? "";
-  testPrompt.value = buildTestPrompt(selectedApproach, selectedMode, launchUrl);
+  testUrlBlock.hidden = false;
+  testUrlValue.textContent = generatedTestUrl;
+  testPrompt.value = buildTestPrompt(
+    selectedApproach,
+    selectedMode,
+    selectedMode === "launch" ? generatedTestUrl : undefined,
+  );
 
   selectedUrl.searchParams.set("mode", selectedMode);
   window.history.replaceState(null, "", selectedUrl);

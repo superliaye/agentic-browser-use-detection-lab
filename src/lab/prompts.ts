@@ -1,14 +1,34 @@
 import {
   getModeInstructions,
+  TEST_URL_PLACEHOLDER,
   type AgenticApproach,
   type EntryMode,
 } from "./approaches.js";
 
-export function buildLaunchUrl(baseUrl: string, approachId: string): string {
+export function buildTestUrl(
+  baseUrl: string,
+  approachId: string,
+  mode: EntryMode,
+): string {
   const url = new URL(baseUrl);
   url.searchParams.set("approach", approachId);
-  url.searchParams.set("mode", "launch");
+  url.searchParams.set("mode", mode);
   return url.toString();
+}
+
+export function buildLaunchUrl(baseUrl: string, approachId: string): string {
+  return buildTestUrl(baseUrl, approachId, "launch");
+}
+
+export function buildGuideSteps(
+  approach: AgenticApproach,
+  mode: EntryMode,
+  testUrl: string,
+): readonly string[] {
+  const instructions = getModeInstructions(approach, mode);
+  return instructions.steps.map((step) =>
+    step.replaceAll(TEST_URL_PLACEHOLDER, testUrl),
+  );
 }
 
 export function buildTestPrompt(

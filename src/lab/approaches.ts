@@ -1,5 +1,7 @@
 export type EntryMode = "launch" | "takeover";
 
+export const TEST_URL_PLACEHOLDER = "{testUrl}";
+
 export interface ApproachModeInstructions {
   readonly mode: EntryMode;
   readonly steps: readonly string[];
@@ -36,7 +38,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       {
         mode: "takeover",
         steps: [
-          "Keep this lab open in Chrome and open Claude in Chrome's side panel.",
+          `Keep ${TEST_URL_PLACEHOLDER} open in Chrome and open Claude in Chrome's side panel.`,
           "Copy the generated prompt below into the side panel.",
           "Approve access to this site if Chrome or Claude asks.",
         ],
@@ -66,7 +68,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       {
         mode: "takeover",
         steps: [
-          "Open this lab in Chrome and enable the Claude in Chrome connector in Claude Desktop.",
+          `Open ${TEST_URL_PLACEHOLDER} in Chrome and enable the Claude in Chrome connector in Claude Desktop.`,
           "Start a Claude Desktop conversation, then copy the generated prompt below.",
           "Approve browser actions when asked.",
         ],
@@ -118,7 +120,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       {
         mode: "takeover",
         steps: [
-          "Open this lab in the Claude Desktop Code tab's Browser pane.",
+          `Open ${TEST_URL_PLACEHOLDER} in the Claude Desktop Code tab's Browser pane.`,
           "Keep that pane selected and copy the generated prompt below into the Code session.",
         ],
       },
@@ -159,7 +161,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       {
         mode: "takeover",
         steps: [
-          "Open this lab in the task's Browser pane.",
+          `Open ${TEST_URL_PLACEHOLDER} in the task's Browser pane.`,
           "Keep the pane selected and copy the generated prompt below into the Codex task.",
         ],
       },
@@ -185,7 +187,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       {
         mode: "takeover",
         steps: [
-          "Keep this lab open in Chrome and open the OpenAI extension panel.",
+          `Keep ${TEST_URL_PLACEHOLDER} open in Chrome and open the OpenAI extension panel.`,
           "Copy the generated prompt below into the extension and approve access when asked.",
         ],
       },
@@ -211,7 +213,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       {
         mode: "takeover",
         steps: [
-          "Open this lab in a visible Chrome window.",
+          `Open ${TEST_URL_PLACEHOLDER} in a visible Chrome window.`,
           "Enable Computer Use for the Codex task and permit it to use Chrome.",
           "Copy the generated prompt below into the task.",
         ],
@@ -257,7 +259,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       {
         mode: "takeover",
         steps: [
-          "Start Chrome with remote debugging enabled and open this lab in that Chrome instance.",
+          `Start Chrome with remote debugging enabled and open ${TEST_URL_PLACEHOLDER} in that Chrome instance.`,
           "Configure Chrome DevTools MCP to connect to that instance, then start Claude Code.",
           "Copy the generated prompt below into Claude Code.",
         ],
@@ -303,7 +305,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
       {
         mode: "takeover",
         steps: [
-          "Start Chrome with remote debugging enabled and open this lab in that Chrome instance.",
+          `Start Chrome with remote debugging enabled and open ${TEST_URL_PLACEHOLDER} in that Chrome instance.`,
           "Configure Chrome DevTools MCP to connect to that instance and restart the Codex host.",
           "Copy the generated prompt below into the Codex task.",
         ],

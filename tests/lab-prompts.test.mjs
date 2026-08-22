@@ -6,7 +6,9 @@ import {
   AGENTIC_APPROACHES,
   getApproach,
 } from "../.test-dist/src/lab/approaches.js";
-import { buildLaunchUrl, buildTestPrompt } from "../.test-dist/src/lab/prompts.js";
+import * as promptBuilders from "../.test-dist/src/lab/prompts.js";
+
+const { buildLaunchUrl, buildTestPrompt } = promptBuilders;
 
 test("launch prompt includes generated URL and counter instruction", () => {
   const url = buildLaunchUrl(
@@ -27,6 +29,28 @@ test("takeover prompt targets the current page without a URL", () => {
 
   assert.match(prompt, /current page/);
   assert.doesNotMatch(prompt, /https:\/\//);
+});
+
+test("every takeover guide includes the exact test URL to open", () => {
+  assert.equal(typeof promptBuilders.buildTestUrl, "function");
+  assert.equal(typeof promptBuilders.buildGuideSteps, "function");
+
+  for (const approach of AGENTIC_APPROACHES.filter(({ modes }) =>
+    modes.includes("takeover"),
+  )) {
+    const testUrl = promptBuilders.buildTestUrl(
+      "https://superliaye.github.io/agentic-browser-use-detection-lab/",
+      approach.id,
+      "takeover",
+    );
+    const steps = promptBuilders.buildGuideSteps(
+      approach,
+      "takeover",
+      testUrl,
+    );
+
+    assert.equal(steps[0]?.includes(testUrl), true, approach.id);
+  }
 });
 
 test("unsupported modes are rejected", () => {
