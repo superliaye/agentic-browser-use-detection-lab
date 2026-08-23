@@ -1,50 +1,12 @@
 # Agentic Browser Use Detection Lab
 
-A public, application-agnostic lab for testing what a web page can deterministically observe when Claude or Codex operates a Chromium browser.
+A application-agnostic lab for testing what a web page can deterministically observe when Claude or Codex operates a Chromium browser.
 
 **[Open the live lab](https://superliaye.github.io/agentic-browser-use-detection-lab/)**
-
-The page is the test guide, interaction target, and live result viewer. Select an approach and entry mode, give the generated prompt to that agent, and watch the counter and detection contract. A negative result means **not detected**, never “human.”
-
-## Detection contract
-
-```ts
-interface DetectionResult {
-  readonly isAgenticUseDetected: boolean;
-  readonly isGenericAutomationDetected: boolean;
-  readonly signals: readonly DetectionSignal[];
-}
-
-type DetectionSignalStatus =
-  | "detected_now"
-  | "detected_earlier_in_session"
-  | "not_detected"
-  | "unsupported"
-  | "error";
-```
-
-There are no likelihood scores. Each boolean latches independently: product-specific or cooperative agent signals set `isAgenticUseDetected`, while generic WebDriver or Playwright signals set `isGenericAutomationDetected`. Per-signal status distinguishes evidence present during the latest inspection from evidence seen earlier in the detector session. `evidence` always contains the latest inspection, including when a previously seen marker is now absent. `unsupported` and `error` describe the latest inspection and take precedence over session history.
-
-A generic automation signal does not determine whether an agent or another automation harness caused it. “Deterministic” assumes normal, non-adversarial tooling; page-visible state can be removed or forged.
-
-The current probes inspect:
-
-- Claude in Chrome active and retained DOM markers.
-- Claude Desktop's `Claude/<version>` user-agent token.
-- Claude accessibility ref-tracking globals.
-- Electron's user-agent token as informational runtime evidence only.
-- The ChatGPT Desktop Codex Browser context root.
-- The ChatGPT Desktop Codex Chrome-extension agent-overlay root.
-- A cooperative WebMCP handshake and Chrome DevTools MCP's separate `window.__dtmcp` bridge marker.
-- `navigator.webdriver`.
-- Playwright's `window.__playwright__binding__` and `window.__pwInitScripts` globals.
-- Trusted active mouse input with zero pressure as informational evidence only.
 
 See [detection mechanisms](docs/detection/) and [browser observability limits](docs/detection/browser-observability-limits.md).
 
 ## Approach catalog
-
-The catalog names the host product when a flow belongs to Claude Desktop, Claude Code, or ChatGPT Desktop. Model-independent MCP controllers have one shared entry. Each approach page records its tested host, configuration, versions, and detection limits.
 
 | Approach | Modes | Agentic detection | Generic automation detection | Current limitation | Notes |
 | --- | --- | --- | --- | --- | --- |
