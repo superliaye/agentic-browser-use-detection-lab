@@ -8,6 +8,8 @@ import {
 
 function createEnvironment({ userAgent, windowProperties = [] } = {}) {
   let documentChangeListener;
+  let latestPointerObservation;
+  let pointerEventListener;
   let disposerCount = 0;
   const windowPropertySet = new Set(windowProperties);
 
@@ -15,6 +17,7 @@ function createEnvironment({ userAgent, windowProperties = [] } = {}) {
     environment: {
       getUserAgent: () => userAgent,
       getNavigatorWebdriver: () => false,
+      getLatestPointerObservation: () => latestPointerObservation,
       hasWindowProperty: (name) => windowPropertySet.has(name),
       hasElement: () => false,
       subscribeToDocumentChanges: (listener) => {
@@ -23,8 +26,18 @@ function createEnvironment({ userAgent, windowProperties = [] } = {}) {
           disposerCount += 1;
         };
       },
+      subscribeToPointerEvents: (listener) => {
+        pointerEventListener = listener;
+        return () => {
+          disposerCount += 1;
+        };
+      },
     },
     triggerDocumentChange: () => documentChangeListener?.(),
+    triggerPointerEvent: (observation) => {
+      latestPointerObservation = observation;
+      pointerEventListener?.();
+    },
     getDisposerCount: () => disposerCount,
   };
 }
@@ -115,7 +128,12 @@ function runCodexBuiltInBrowserDetection() {
 }
 
 function runStoppedDetectorTransition() {
-  const { environment, triggerDocumentChange, getDisposerCount } = createEnvironment();
+  const {
+    environment,
+    triggerDocumentChange,
+    triggerPointerEvent,
+    getDisposerCount,
+  } = createEnvironment();
   const detector = createAgenticUseDetector(
     [
       {
@@ -135,6 +153,12 @@ function runStoppedDetectorTransition() {
   detector.start();
   detector.stop();
   triggerDocumentChange();
+  triggerPointerEvent({
+    buttons: 1,
+    isTrusted: true,
+    pointerType: "mouse",
+    pressure: 0,
+  });
 
   return { callbackCount, disposerCount: getDisposerCount() };
 }
@@ -240,7 +264,27 @@ test("stops environment observation and later callbacks", () => {
   const { callbackCount, disposerCount } = runStoppedDetectorTransition();
 
   assert.equal(callbackCount, 1);
-  assert.equal(disposerCount, 1);
+  assert.equal(disposerCount, 2);
+});
+
+test("keeps zero-pressure mouse evidence out of both aggregate verdicts", () => {
+  const { environment, triggerPointerEvent } = createEnvironment();
+  const detector = createAgenticUseDetector(defaultProbes, environment);
+
+  detector.start();
+  triggerPointerEvent({
+    buttons: 1,
+    isTrusted: true,
+    pointerType: "mouse",
+    pressure: 0,
+  });
+  const result = detector.getResult();
+  const signal = result.signals.find(({ id }) => id === "cdp-zero-mouse-pressure");
+
+  assert.equal(signal?.status, "detected_now");
+  assert.equal(signal?.proves, "nothing");
+  assert.equal(result.isAgenticUseDetected, false);
+  assert.equal(result.isGenericAutomationDetected, false);
 });
 
 test("returns frozen result snapshots", () => {

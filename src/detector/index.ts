@@ -1,12 +1,15 @@
 export { createBrowserDetectionEnvironment } from "./environment.js";
 export { createAgenticUseDetector } from "./monitor.js";
 export {
+  cdpZeroMousePressureProbe,
   claudeActiveControlProbe,
   claudeDesktopBrowserUserAgentProbe,
   claudePriorControlProbe,
   claudeRefTrackingGlobalsProbe,
+  chromeDevToolsThirdPartyBridgeProbe,
   codexBuiltInBrowserProbe,
   codexExtensionAgentOverlayProbe,
+  cooperativeWebMcpHandshakeProbe,
   defaultProbes,
   electronUserAgentProbe,
   playwrightWindowGlobalsProbe,
@@ -24,4 +27,5 @@ export type {
   DetectionResultListener,
   DetectionSignal,
   DetectionSignalStatus,
+  PointerObservation,
 } from "./types.js";

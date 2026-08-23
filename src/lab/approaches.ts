@@ -256,6 +256,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
         mode: "launch",
         steps: [
           "Configure Chrome DevTools MCP in the agent host you want to test with its normal browser-launch mode.",
+          "Optional disclosures: for WebMCP, add --category-experimental-webmcp=true and --chrome-arg=--enable-features=WebMCP (Chrome 150 or newer); for the separate third-party bridge, add --category-experimental-third-party=true.",
           "Start a fresh session and confirm the server tools are available.",
           "Copy the generated prompt below into that agent host.",
         ],
@@ -265,12 +266,20 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
         steps: [
           `Start Chrome with remote debugging enabled and open ${TEST_URL_PLACEHOLDER} in that Chrome instance.`,
           "Configure Chrome DevTools MCP to connect to that instance, then start or restart the agent host.",
+          "Optional disclosures: for WebMCP, add --category-experimental-webmcp=true and start that Chrome with --enable-features=WebMCP (Chrome 150 or newer); for the separate third-party bridge, add --category-experimental-third-party=true.",
           "Copy the generated prompt below into that agent host.",
         ],
       },
     ],
     docsPath: "docs/approaches/chrome-devtools-mcp.md",
-    expectedSignalIds: [],
+    expectedSignalIds: [
+      "navigator-webdriver",
+      "cdp-zero-mouse-pressure",
+      "cooperative-webmcp-handshake",
+      "chrome-devtools-third-party-bridge",
+    ],
+    promptSetup:
+      "If execute_webmcp_tool is available and this page exposes agentic_use_detection_handshake, invoke that tool exactly once before clicking the counter. If the MCP tool or page tool is unavailable, continue with the normal Chrome DevTools MCP click flow; do not substitute another MCP server or controller for the optional handshake.",
   },
 ];
 

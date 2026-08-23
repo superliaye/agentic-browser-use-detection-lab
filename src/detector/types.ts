@@ -15,6 +15,13 @@ export type DetectionConclusion = "agentic_use" | "automation" | "nothing";
 
 export type DetectionEvidenceValue = string | number | boolean;
 
+export interface PointerObservation {
+  readonly buttons: number;
+  readonly isTrusted: boolean;
+  readonly pointerType: string;
+  readonly pressure: number;
+}
+
 export interface DetectionProbeObservation {
   readonly status: DetectionProbeObservationStatus;
   readonly evidence: Readonly<Record<string, DetectionEvidenceValue>>;
@@ -23,9 +30,11 @@ export interface DetectionProbeObservation {
 export interface DetectionEnvironment {
   getUserAgent(): string | undefined;
   getNavigatorWebdriver(): boolean | undefined;
+  getLatestPointerObservation(): PointerObservation | undefined;
   hasWindowProperty(name: string): boolean;
   hasElement(selector: string): boolean;
   subscribeToDocumentChanges(listener: () => void): (() => void) | undefined;
+  subscribeToPointerEvents(listener: () => void): (() => void) | undefined;
 }
 
 export interface DetectionProbe {

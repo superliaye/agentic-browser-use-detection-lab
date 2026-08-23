@@ -1,6 +1,8 @@
-import type { DetectionEnvironment } from "./types.js";
+import type { DetectionEnvironment, PointerObservation } from "./types.js";
 
 export function createBrowserDetectionEnvironment(): DetectionEnvironment {
+  let latestPointerObservation: PointerObservation | undefined;
+
   return {
     getUserAgent(): string | undefined {
       return typeof navigator.userAgent === "string"
@@ -10,6 +12,10 @@ export function createBrowserDetectionEnvironment(): DetectionEnvironment {
 
     getNavigatorWebdriver(): boolean | undefined {
       return typeof navigator.webdriver === "boolean" ? navigator.webdriver : undefined;
+    },
+
+    getLatestPointerObservation(): PointerObservation | undefined {
+      return latestPointerObservation;
     },
 
     hasWindowProperty(name: string): boolean {
@@ -26,14 +32,36 @@ export function createBrowserDetectionEnvironment(): DetectionEnvironment {
       }
 
       const observer = new MutationObserver(listener);
+      const handleThirdPartyToolDiscovery = (): void => {
+        queueMicrotask(listener);
+      };
       observer.observe(document.documentElement, {
         attributes: true,
         childList: true,
         subtree: true,
       });
+      window.addEventListener("devtoolstooldiscovery", handleThirdPartyToolDiscovery);
 
       return () => {
         observer.disconnect();
+        window.removeEventListener("devtoolstooldiscovery", handleThirdPartyToolDiscovery);
+      };
+    },
+
+    subscribeToPointerEvents(listener: () => void): () => void {
+      const handlePointerDown = (event: PointerEvent): void => {
+        latestPointerObservation = {
+          buttons: event.buttons,
+          isTrusted: event.isTrusted,
+          pointerType: event.pointerType,
+          pressure: event.pressure,
+        };
+        listener();
+      };
+
+      window.addEventListener("pointerdown", handlePointerDown, true);
+      return () => {
+        window.removeEventListener("pointerdown", handlePointerDown, true);
       };
     },
   };

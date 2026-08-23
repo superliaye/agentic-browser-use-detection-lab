@@ -2,19 +2,30 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  cdpZeroMousePressureProbe,
   claudeActiveControlProbe,
   claudePriorControlProbe,
+  chromeDevToolsThirdPartyBridgeProbe,
+  cooperativeWebMcpHandshakeProbe,
   playwrightWindowGlobalsProbe,
   webdriverProbe,
 } from "../.test-dist/src/detector/probes/index.js";
 
-function createEnvironment({ selector, userAgent, webdriver, windowProperty } = {}) {
+function createEnvironment({
+  pointerObservation,
+  selector,
+  userAgent,
+  webdriver,
+  windowProperty,
+} = {}) {
   return {
     getUserAgent: () => userAgent,
     getNavigatorWebdriver: () => webdriver,
+    getLatestPointerObservation: () => pointerObservation,
     hasWindowProperty: (name) => name === windowProperty,
     hasElement: (candidate) => candidate === selector,
     subscribeToDocumentChanges: () => undefined,
+    subscribeToPointerEvents: () => undefined,
   };
 }
 
@@ -79,4 +90,71 @@ test("keeps absent and unsupported WebDriver evidence distinct", () => {
   assert.deepEqual(absentObservation.evidence, { webdriver: false });
   assert.equal(unsupportedObservation.status, "unsupported");
   assert.deepEqual(unsupportedObservation.evidence, { webdriverAvailable: false });
+});
+
+test("reports zero-pressure active mouse input as informational evidence", () => {
+  const observation = cdpZeroMousePressureProbe.inspect(
+    createEnvironment({
+      pointerObservation: {
+        buttons: 1,
+        isTrusted: true,
+        pointerType: "mouse",
+        pressure: 0,
+      },
+    }),
+  );
+
+  assert.equal(observation.status, "detected");
+  assert.equal(cdpZeroMousePressureProbe.proves, "nothing");
+  assert.deepEqual(observation.evidence, {
+    buttons: 1,
+    isTrusted: true,
+    pointerType: "mouse",
+    pressure: 0,
+  });
+});
+
+test("does not report normal mouse pressure or inactive pointer input", () => {
+  const normalPressure = cdpZeroMousePressureProbe.inspect(
+    createEnvironment({
+      pointerObservation: {
+        buttons: 1,
+        isTrusted: true,
+        pointerType: "mouse",
+        pressure: 0.5,
+      },
+    }),
+  );
+  const inactivePointer = cdpZeroMousePressureProbe.inspect(
+    createEnvironment({
+      pointerObservation: {
+        buttons: 0,
+        isTrusted: true,
+        pointerType: "mouse",
+        pressure: 0,
+      },
+    }),
+  );
+
+  assert.equal(normalPressure.status, "not_detected");
+  assert.equal(inactivePointer.status, "not_detected");
+});
+
+test("detects the cooperative WebMCP handshake as agentic use", () => {
+  const observation = inspectWithSelector(
+    cooperativeWebMcpHandshakeProbe,
+    "#agentic-use-detection-webmcp-handshake",
+  );
+
+  assert.equal(observation.status, "detected");
+  assert.equal(cooperativeWebMcpHandshakeProbe.proves, "agentic_use");
+});
+
+test("detects the Chrome DevTools third-party bridge separately from WebMCP", () => {
+  const observation = chromeDevToolsThirdPartyBridgeProbe.inspect(
+    createEnvironment({ windowProperty: "__dtmcp" }),
+  );
+
+  assert.equal(observation.status, "detected");
+  assert.equal(chromeDevToolsThirdPartyBridgeProbe.proves, "agentic_use");
 });
