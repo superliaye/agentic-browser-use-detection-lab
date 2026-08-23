@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  cdpRuntimeSerializationObserverProbe,
   cdpZeroMousePressureProbe,
   claudeActiveControlProbe,
   claudePriorControlProbe,
@@ -12,6 +13,7 @@ import {
 } from "../.test-dist/src/detector/probes/index.js";
 
 function createEnvironment({
+  cdpRuntimeSerializationObserved = false,
   pointerObservation,
   selector,
   userAgent,
@@ -19,6 +21,7 @@ function createEnvironment({
   windowProperty,
 } = {}) {
   return {
+    getCdpRuntimeSerializationObserved: () => cdpRuntimeSerializationObserved,
     getUserAgent: () => userAgent,
     getNavigatorWebdriver: () => webdriver,
     getLatestPointerObservation: () => pointerObservation,
@@ -26,6 +29,7 @@ function createEnvironment({
     hasElement: (candidate) => candidate === selector,
     subscribeToDocumentChanges: () => undefined,
     subscribeToPointerEvents: () => undefined,
+    subscribeToCdpRuntimeSerializationChanges: () => undefined,
   };
 }
 
@@ -138,6 +142,28 @@ test("does not report normal mouse pressure or inactive pointer input", () => {
 
   assert.equal(normalPressure.status, "not_detected");
   assert.equal(inactivePointer.status, "not_detected");
+});
+
+test("reports a CDP Runtime serialization observer without attributing its operator", () => {
+  const observation = cdpRuntimeSerializationObserverProbe.inspect(
+    createEnvironment({ cdpRuntimeSerializationObserved: true }),
+  );
+
+  assert.equal(observation.status, "detected");
+  assert.equal(cdpRuntimeSerializationObserverProbe.proves, "nothing");
+  assert.deepEqual(observation.evidence, {
+    interpretation: "CDP/DevTools observer detected; operator unknown.",
+    serializationObserved: true,
+  });
+});
+
+test("does not report an unobserved CDP Runtime serialization side effect", () => {
+  const observation = cdpRuntimeSerializationObserverProbe.inspect(
+    createEnvironment(),
+  );
+
+  assert.equal(observation.status, "not_detected");
+  assert.deepEqual(observation.evidence, { serializationObserved: false });
 });
 
 test("detects the cooperative WebMCP handshake as agentic use", () => {

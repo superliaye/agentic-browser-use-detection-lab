@@ -8,6 +8,7 @@ import {
 import { codexBuiltInBrowserProbe } from "./codex-browser.js";
 import { codexExtensionAgentOverlayProbe } from "./codex-chrome-extension.js";
 import { cdpZeroMousePressureProbe } from "./cdp-input.js";
+import { cdpRuntimeSerializationObserverProbe } from "./cdp-runtime.js";
 import {
   chromeDevToolsThirdPartyBridgeProbe,
   cooperativeWebMcpHandshakeProbe,
@@ -24,6 +25,7 @@ export {
 export { codexBuiltInBrowserProbe } from "./codex-browser.js";
 export { codexExtensionAgentOverlayProbe } from "./codex-chrome-extension.js";
 export { cdpZeroMousePressureProbe } from "./cdp-input.js";
+export { cdpRuntimeSerializationObserverProbe } from "./cdp-runtime.js";
 export {
   chromeDevToolsThirdPartyBridgeProbe,
   cooperativeWebMcpHandshakeProbe,
@@ -44,4 +46,5 @@ export const defaultProbes: readonly DetectionProbe[] = Object.freeze([
   webdriverProbe,
   playwrightWindowGlobalsProbe,
   cdpZeroMousePressureProbe,
+  cdpRuntimeSerializationObserverProbe,
 ]);

@@ -20,6 +20,8 @@ Normal CDP control does not identify a model or agent host. In the default launc
 
 The controlled click changed the counter from 0 to 1 and produced a trusted mouse `pointerdown` with active buttons and pressure `0`. The lab reports that input as `cdp-zero-mouse-pressure`, but the signal proves nothing and changes neither aggregate boolean. It is an observed input-stack artifact, not proof of CDP, Chrome DevTools MCP, or agentic use. The user agent exposed the Chrome token `Chrome/151.0.0.0` and contained no Claude or Electron token; the full browser version was not recorded.
 
+The lab also performs one best-effort Runtime console-serialization check. When its side effect fires, `cdp-runtime-serialization-observer` displays “CDP/DevTools observer detected; operator unknown.” The signal can also fire for manually opened DevTools or another Runtime-enabled CDP client, can miss CDP clients that do not enable Runtime, and changes neither aggregate boolean.
+
 Two opt-in page-tool paths can provide deterministic agentic evidence:
 
 - Invoking the page's `agentic_use_detection_handshake` through `execute_webmcp_tool` creates a cooperative marker and sets `isAgenticUseDetected`. This is explicit disclosure, not fingerprinting.
@@ -27,7 +29,7 @@ Two opt-in page-tool paths can provide deterministic agentic evidence:
 
 Neither opt-in path is required for the default launch or takeover flow. Without one of them, the lab does not turn ordinary CDP control into an agentic-use verdict.
 
-This result covers only the server's default browser-launch mode. A connection to an existing Chrome or a modified launch configuration may expose different or no generic signals; neither was tested. CDP alone is not detected, and the obsolete `Error.stack` getter is deliberately excluded.
+This result covers only the server's default browser-launch mode. A connection to an existing Chrome or a modified launch configuration may expose different or no generic signals; neither was tested. Ordinary CDP control still has no deterministic agent-specific signal. The Runtime observer probe is informational, and the obsolete `Error.stack` getter is deliberately excluded.
 
 ## Live Snapshot
 <img width="2645" height="1295" alt="image" src="https://github.com/user-attachments/assets/36e76f44-35a3-4a38-97e2-a8512a12683e" />
@@ -40,4 +42,4 @@ This result covers only the server's default browser-launch mode. A connection t
 - Browser user-agent token: `Chrome/151.0.0.0`; the full browser version was not recorded.
 - Claude Code and OS versions: not recorded.
 
-Sources: [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp), [WebMCP tools](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/src/tools/webmcp.ts), [third-party bridge source](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/src/McpPage.ts), [Chrome WebMCP declarative API](https://developer.chrome.com/docs/ai/webmcp/declarative-api), [WebMCP CDP domain](https://chromedevtools.github.io/devtools-protocol/tot/WebMCP/), [CDP limitation](../detection/browser-observability-limits.md).
+Sources: [Chrome DevTools MCP 1.7.0 browser launch](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/chrome-devtools-mcp-v1.7.0/src/browser.ts), [WebMCP tools](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/src/tools/webmcp.ts), [third-party bridge source](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/src/McpPage.ts), [Chrome WebMCP declarative API](https://developer.chrome.com/docs/ai/webmcp/declarative-api), [WebMCP CDP domain](https://chromedevtools.github.io/devtools-protocol/tot/WebMCP/), [CDP limitation](../detection/browser-observability-limits.md).

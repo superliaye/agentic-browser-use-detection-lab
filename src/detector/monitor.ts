@@ -70,6 +70,7 @@ export function createAgenticUseDetector(
   let isStopped = false;
   let disposeDocumentObservation: (() => void) | undefined;
   let disposePointerObservation: (() => void) | undefined;
+  let disposeCdpRuntimeSerializationObservation: (() => void) | undefined;
 
   const inspectAndPublish = (): void => {
     if (isStopped) {
@@ -130,6 +131,8 @@ export function createAgenticUseDetector(
       inspectAndPublish();
       disposeDocumentObservation = environment.subscribeToDocumentChanges(inspectAndPublish);
       disposePointerObservation = environment.subscribeToPointerEvents(inspectAndPublish);
+      disposeCdpRuntimeSerializationObservation =
+        environment.subscribeToCdpRuntimeSerializationChanges(inspectAndPublish);
     },
 
     stop(): void {
@@ -142,6 +145,8 @@ export function createAgenticUseDetector(
       disposeDocumentObservation = undefined;
       disposePointerObservation?.();
       disposePointerObservation = undefined;
+      disposeCdpRuntimeSerializationObservation?.();
+      disposeCdpRuntimeSerializationObservation = undefined;
       listeners.clear();
     },
 

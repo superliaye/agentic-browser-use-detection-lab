@@ -28,6 +28,7 @@ export interface DetectionProbeObservation {
 }
 
 export interface DetectionEnvironment {
+  getCdpRuntimeSerializationObserved(): boolean;
   getUserAgent(): string | undefined;
   getNavigatorWebdriver(): boolean | undefined;
   getLatestPointerObservation(): PointerObservation | undefined;
@@ -35,6 +36,9 @@ export interface DetectionEnvironment {
   hasElement(selector: string): boolean;
   subscribeToDocumentChanges(listener: () => void): (() => void) | undefined;
   subscribeToPointerEvents(listener: () => void): (() => void) | undefined;
+  subscribeToCdpRuntimeSerializationChanges(
+    listener: () => void,
+  ): (() => void) | undefined;
 }
 
 export interface DetectionProbe {

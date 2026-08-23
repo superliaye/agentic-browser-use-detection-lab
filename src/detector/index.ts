@@ -1,6 +1,7 @@
 export { createBrowserDetectionEnvironment } from "./environment.js";
 export { createAgenticUseDetector } from "./monitor.js";
 export {
+  cdpRuntimeSerializationObserverProbe,
   cdpZeroMousePressureProbe,
   claudeActiveControlProbe,
   claudeDesktopBrowserUserAgentProbe,

@@ -7,6 +7,8 @@ import {
 } from "../.test-dist/src/detector/index.js";
 
 function createEnvironment({ userAgent, windowProperties = [] } = {}) {
+  let cdpRuntimeSerializationChangeListener;
+  let cdpRuntimeSerializationObserved = false;
   let documentChangeListener;
   let latestPointerObservation;
   let pointerEventListener;
@@ -15,6 +17,7 @@ function createEnvironment({ userAgent, windowProperties = [] } = {}) {
 
   return {
     environment: {
+      getCdpRuntimeSerializationObserved: () => cdpRuntimeSerializationObserved,
       getUserAgent: () => userAgent,
       getNavigatorWebdriver: () => false,
       getLatestPointerObservation: () => latestPointerObservation,
@@ -32,6 +35,16 @@ function createEnvironment({ userAgent, windowProperties = [] } = {}) {
           disposerCount += 1;
         };
       },
+      subscribeToCdpRuntimeSerializationChanges: (listener) => {
+        cdpRuntimeSerializationChangeListener = listener;
+        return () => {
+          disposerCount += 1;
+        };
+      },
+    },
+    triggerCdpRuntimeSerialization: () => {
+      cdpRuntimeSerializationObserved = true;
+      cdpRuntimeSerializationChangeListener?.();
     },
     triggerDocumentChange: () => documentChangeListener?.(),
     triggerPointerEvent: (observation) => {
@@ -264,7 +277,7 @@ test("stops environment observation and later callbacks", () => {
   const { callbackCount, disposerCount } = runStoppedDetectorTransition();
 
   assert.equal(callbackCount, 1);
-  assert.equal(disposerCount, 2);
+  assert.equal(disposerCount, 3);
 });
 
 test("keeps zero-pressure mouse evidence out of both aggregate verdicts", () => {
@@ -280,6 +293,23 @@ test("keeps zero-pressure mouse evidence out of both aggregate verdicts", () => 
   });
   const result = detector.getResult();
   const signal = result.signals.find(({ id }) => id === "cdp-zero-mouse-pressure");
+
+  assert.equal(signal?.status, "detected_now");
+  assert.equal(signal?.proves, "nothing");
+  assert.equal(result.isAgenticUseDetected, false);
+  assert.equal(result.isGenericAutomationDetected, false);
+});
+
+test("keeps CDP Runtime observer evidence out of both aggregate verdicts", () => {
+  const { environment, triggerCdpRuntimeSerialization } = createEnvironment();
+  const detector = createAgenticUseDetector(defaultProbes, environment);
+
+  detector.start();
+  triggerCdpRuntimeSerialization();
+  const result = detector.getResult();
+  const signal = result.signals.find(
+    ({ id }) => id === "cdp-runtime-serialization-observer",
+  );
 
   assert.equal(signal?.status, "detected_now");
   assert.equal(signal?.proves, "nothing");

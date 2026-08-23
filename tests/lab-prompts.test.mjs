@@ -113,6 +113,7 @@ test("Chrome DevTools MCP prompt keeps the cooperative handshake optional", () =
   assert.deepEqual(approach.expectedSignalIds, [
     "navigator-webdriver",
     "cdp-zero-mouse-pressure",
+    "cdp-runtime-serialization-observer",
     "cooperative-webmcp-handshake",
     "chrome-devtools-third-party-bridge",
   ]);

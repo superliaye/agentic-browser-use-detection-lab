@@ -1,9 +1,14 @@
 import type { DetectionEnvironment, PointerObservation } from "./types.js";
 
 export function createBrowserDetectionEnvironment(): DetectionEnvironment {
+  let cdpRuntimeSerializationObserved = false;
   let latestPointerObservation: PointerObservation | undefined;
 
   return {
+    getCdpRuntimeSerializationObserved(): boolean {
+      return cdpRuntimeSerializationObserved;
+    },
+
     getUserAgent(): string | undefined {
       return typeof navigator.userAgent === "string"
         ? navigator.userAgent
@@ -62,6 +67,27 @@ export function createBrowserDetectionEnvironment(): DetectionEnvironment {
       window.addEventListener("pointerdown", handlePointerDown, true);
       return () => {
         window.removeEventListener("pointerdown", handlePointerDown, true);
+      };
+    },
+
+    subscribeToCdpRuntimeSerializationChanges(listener: () => void): () => void {
+      let isActive = true;
+      const serializationTarget = function cdpRuntimeSerializationTarget(): void {};
+
+      Object.defineProperty(serializationTarget, "toString", {
+        value(): string {
+          if (isActive && !cdpRuntimeSerializationObserved) {
+            cdpRuntimeSerializationObserved = true;
+            queueMicrotask(listener);
+          }
+
+          return "function cdpRuntimeSerializationTarget() {}";
+        },
+      });
+      console.debug(serializationTarget);
+
+      return () => {
+        isActive = false;
       };
     },
   };

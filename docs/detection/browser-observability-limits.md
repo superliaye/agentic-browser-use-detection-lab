@@ -6,12 +6,12 @@ Consequences:
 
 - A counter change proves the interaction happened, not who caused it.
 - Native or trusted input may look like ordinary input to the page.
-- CDP use is not itself a stable page-visible fact.
+- CDP use is not itself a stable page-visible fact. The lab's informational Runtime serialization probe can observe some CDP or DevTools consumers, but it can also detect manually opened DevTools and miss clients that do not enable Runtime.
 - Browser-visible markers can change, disappear, or be forged.
 - A product-specific marker can prove use when present without covering every version or flow.
 - A negative result never proves a human user.
 
-The lab excludes the classic CDP `Error.stack` getter technique. V8 changes in May 2025 stopped DevTools error previews from invoking user-defined getters, so the signal now fails silently in modern Chromium.
+The lab excludes the classic CDP `Error.stack` getter technique. V8 changes in May 2025 stopped DevTools error previews from invoking user-defined getters, so the signal now fails silently in modern Chromium. The separate `Function.toString` serialization probe is retained only as informational observer evidence and does not affect either verdict.
 
 The lab also avoids behavioral scoring. Products can combine these deterministic facts with their own server-side, policy, or risk systems, but that is outside this library's contract.
 
