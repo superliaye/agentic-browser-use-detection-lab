@@ -10,20 +10,18 @@ See [detection mechanisms](docs/detection/) and [browser observability limits](d
 
 Select an approach name to open its test instructions, observed signals, versions, and detection limits.
 
-**Agentic detection:** ✅ Detectable · ⚠️ Conditional · ❌ No known signal · ⛔ Not testable
-
-| Approach — open details | Agentic detection | Current limitation | Notes |
-| --- | --- | --- | --- |
-| [Claude in Chrome side panel](docs/approaches/claude-in-chrome-side-panel.md) | ✅ Detectable | Coverage across current extension versions is not established | Active marker transition manually observed |
-| [Claude Desktop — Chrome connector](docs/approaches/claude-desktop-chrome-connector.md) | ✅ Detectable | Versions beyond Desktop 1.3109.9 and extension 1.0.85 are unverified | Uses Claude in Chrome |
-| [Claude Code — Chrome](docs/approaches/claude-code-chrome.md) | ✅ Detectable | Versions beyond Claude Code 2.1.240 and extension 1.0.85 are unverified | Official integration opens task tabs |
-| [Claude Desktop — Browser pane](docs/approaches/claude-desktop-browser-pane.md) | ✅ Detectable | Signals inspected only in Claude Desktop 1.34493.1 (255293) | Code tab; separate in-app profile |
-| [Claude Desktop — Computer Use](docs/approaches/claude-desktop-computer-use.md) | ⛔ Not testable | Browsers are view-only in Desktop 1.34493.1 (255293) | Limitation fully inspected |
-| [ChatGPT Desktop — Codex Browser](docs/approaches/chatgpt-desktop-codex-browser.md) | ✅ Detectable | Marker inspected only in Codex 26.818.41509 | `#codex-browser-sidebar-comments-root` |
-| [ChatGPT Desktop — Codex + Chrome extension](docs/approaches/chatgpt-desktop-codex-chrome-extension.md) | ✅ Detectable | Verified with extension 1.2.27268.51612 | Retained agent-overlay root |
-| [ChatGPT Desktop — Codex Computer Use](docs/approaches/chatgpt-desktop-codex-computer-use.md) | ❌ No known signal | Same result expected for takeover but not separately inspected | Product, browser, and OS versions not recorded |
-| [Playwright MCP](docs/approaches/playwright-mcp.md) | ❌ No known signal | No passive deterministic signal found in the tested configuration | Other configurations may expose generic automation signals |
-| [Chrome DevTools MCP](docs/approaches/chrome-devtools-mcp.md) | ⚠️ Conditional | Normal CDP control has no agent-specific probe | Detectable through cooperative or bridge signals |
+| Approach — open details | Agentic detection | Evidence / limits |
+| --- | --- | --- |
+| [Claude in Chrome side panel](docs/approaches/claude-in-chrome-side-panel.md) | ✅ Detectable | Marker observed in extension 1.0.85; later versions unverified |
+| [Claude Desktop — Chrome connector](docs/approaches/claude-desktop-chrome-connector.md) | ✅ Detectable | Marker observed with Desktop 1.3109.9 + extension 1.0.85; later versions unverified |
+| [Claude Code — Chrome](docs/approaches/claude-code-chrome.md) | ✅ Detectable | Marker observed with Claude Code 2.1.240 + extension 1.0.85; later versions unverified |
+| [Claude Desktop — Browser pane](docs/approaches/claude-desktop-browser-pane.md) | ✅ Detectable | Claude UA token and ref-tracking globals observed in Desktop 1.34493.1 |
+| [Claude Desktop — Computer Use](docs/approaches/claude-desktop-computer-use.md) | ⛔ Not testable | Browser access is view-only in Desktop 1.34493.1 |
+| [ChatGPT Desktop — Codex Browser](docs/approaches/chatgpt-desktop-codex-browser.md) | ✅ Detectable | `#codex-browser-sidebar-comments-root` observed in Codex 26.818.41509 |
+| [ChatGPT Desktop — Codex + Chrome extension](docs/approaches/chatgpt-desktop-codex-chrome-extension.md) | ✅ Detectable | Overlay marker observed in extension 1.2.27268.51612 |
+| [ChatGPT Desktop — Codex Computer Use](docs/approaches/chatgpt-desktop-codex-computer-use.md) | ❌ No known signal | Launch tested; takeover expected to match but unverified; versions unrecorded |
+| [Playwright MCP](docs/approaches/playwright-mcp.md) | ❌ No known signal | No signal in `@playwright/mcp` 0.0.79 default launch; other configurations may differ |
+| [Chrome DevTools MCP](docs/approaches/chrome-devtools-mcp.md) | ⚠️ Opt-in only | Normal CDP is not agent-specific; server 1.7.0 can disclose through WebMCP or its third-party tool discovery bridge |
 
 Other products, API reference harnesses, and generic agent frameworks are listed only in the [appendix](docs/appendix.md).
 
