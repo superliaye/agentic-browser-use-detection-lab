@@ -19,7 +19,7 @@ Select an approach name to open its test instructions, observed signals, version
 | [Claude Desktop — Computer Use](docs/approaches/claude-desktop-computer-use.md) | ⛔ Not testable | Browser access is view-only in Desktop 1.34493.1 |
 | [ChatGPT Desktop — Codex Browser](docs/approaches/chatgpt-desktop-codex-browser.md) | ✅ Detectable | `#codex-browser-sidebar-comments-root` observed in Codex 26.818.41509 |
 | [ChatGPT Desktop — Codex + Chrome extension](docs/approaches/chatgpt-desktop-codex-chrome-extension.md) | ✅ Detectable | Overlay marker observed in extension 1.2.27268.51612 |
-| [ChatGPT Desktop — Codex Computer Use](docs/approaches/chatgpt-desktop-codex-computer-use.md) | ❌ No known signal | Version 26.818.41509 |
+| [ChatGPT Desktop — Codex Computer Use](docs/approaches/chatgpt-desktop-codex-computer-use.md) | ❌ No known signal | Inspected version 26.818.41509 |
 | [Playwright MCP](docs/approaches/playwright-mcp.md) | ❌ No known signal | No signal in `@playwright/mcp` 0.0.79 default launch; other configurations may differ |
 | [Chrome DevTools MCP](docs/approaches/chrome-devtools-mcp.md) | ⚠️ Opt-in only | Can only detect signals from experimental usage |
 
