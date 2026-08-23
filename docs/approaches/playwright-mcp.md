@@ -25,6 +25,9 @@ Two additional candidates were rejected from the product detector:
 
 The tested configuration therefore has no known passive deterministic browser-side signal. Other launch arguments, CDP connections, extension modes, or future versions may expose an existing generic automation signal.
 
+## Live Snapshot
+<img width="2674" height="1358" alt="image" src="https://github.com/user-attachments/assets/30091280-3d5e-44bf-b23d-8700a213209e" />
+
 ## Inspection
 
 - Official docs and package source inspected: 2026-08-23.
