@@ -1,4 +1,4 @@
-# Claude Desktop + Chrome connector
+# Claude Desktop — Chrome connector
 
 ## What it is
 

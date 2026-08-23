@@ -1,8 +1,8 @@
-# Codex Computer Use
+# ChatGPT Desktop — Codex Computer Use
 
 ## What it is
 
-The Computer Use plugin in the ChatGPT desktop app lets ChatGPT Work or Codex see and operate approved macOS or Windows apps. A task can invoke Chrome with `@Chrome`; macOS requires Screen Recording and Accessibility permissions.
+This flow is a Codex task using the Computer Use plugin in the ChatGPT desktop app to see and operate approved macOS or Windows apps. A task can invoke Chrome with `@Chrome`; macOS requires Screen Recording and Accessibility permissions.
 
 ## Test
 
@@ -10,7 +10,7 @@ Supported modes: **launch** and **takeover**.
 
 1. In ChatGPT desktop, select Codex and install or enable the Computer Use plugin.
 2. Approve Chrome. On macOS, grant Screen Recording and Accessibility; on Windows, keep Chrome visible on the active desktop.
-3. Open the selected [lab flow](https://superliaye.github.io/agentic-browser-use-detection-lab/?approach=codex-computer-use&mode=takeover) and give Codex its generated prompt.
+3. Open the selected [lab flow](https://superliaye.github.io/agentic-browser-use-detection-lab/?approach=chatgpt-desktop-codex-computer-use&mode=takeover) and give Codex its generated prompt.
 
 ## Detection
 

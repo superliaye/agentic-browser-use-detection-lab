@@ -10,7 +10,7 @@ export interface ApproachModeInstructions {
 export interface AgenticApproach {
   readonly id: string;
   readonly name: string;
-  readonly provider: "Anthropic" | "OpenAI";
+  readonly provider: "Anthropic" | "Google" | "Microsoft" | "OpenAI";
   readonly summary: string;
   readonly modes: readonly EntryMode[];
   readonly instructions: readonly ApproachModeInstructions[];
@@ -53,7 +53,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
   },
   {
     id: "claude-desktop-chrome-connector",
-    name: "Claude Desktop + Chrome connector",
+    name: "Claude Desktop — Chrome connector",
     provider: "Anthropic",
     summary: "A Claude Desktop conversation uses the Claude in Chrome connector.",
     modes: ["launch", "takeover"],
@@ -83,7 +83,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
   },
   {
     id: "claude-code-chrome",
-    name: "Claude Code + Chrome",
+    name: "Claude Code — Chrome",
     provider: "Anthropic",
     summary: "Claude Code controls visible Chromium tabs through Claude in Chrome.",
     modes: ["launch"],
@@ -104,8 +104,8 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
     ],
   },
   {
-    id: "claude-code-desktop-browser-pane",
-    name: "Claude Code Desktop Browser pane",
+    id: "claude-desktop-browser-pane",
+    name: "Claude Desktop — Browser pane",
     provider: "Anthropic",
     summary: "Claude operates the Browser pane inside the Claude Desktop Code tab.",
     modes: ["launch", "takeover"],
@@ -126,7 +126,7 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
         ],
       },
     ],
-    docsPath: "docs/approaches/claude-code-desktop-browser-pane.md",
+    docsPath: "docs/approaches/claude-desktop-browser-pane.md",
     expectedSignalIds: [
       "claude-desktop-browser-user-agent",
       "claude-ref-tracking-globals",
@@ -134,20 +134,20 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
     ],
   },
   {
-    id: "claude-computer-use",
-    name: "Claude Desktop Computer Use (browser view-only)",
+    id: "claude-desktop-computer-use",
+    name: "Claude Desktop — Computer Use (browser view-only)",
     provider: "Anthropic",
     summary: "Claude Desktop Computer Use can inspect browsers, but its browser permission tier is view-only.",
     modes: [],
     instructions: [],
-    docsPath: "docs/approaches/claude-computer-use.md",
+    docsPath: "docs/approaches/claude-desktop-computer-use.md",
     expectedSignalIds: [],
     unavailableReason:
       "This flow cannot click the counter: Claude Desktop Computer Use classifies browsers as view-only.",
   },
   {
-    id: "codex-built-in-browser",
-    name: "Codex built-in Browser",
+    id: "chatgpt-desktop-codex-browser",
+    name: "ChatGPT Desktop — Codex Browser",
     provider: "OpenAI",
     summary: "A Codex task uses the Browser pane in the ChatGPT desktop app.",
     modes: ["launch", "takeover"],
@@ -167,12 +167,12 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
         ],
       },
     ],
-    docsPath: "docs/approaches/codex-built-in-browser.md",
+    docsPath: "docs/approaches/chatgpt-desktop-codex-browser.md",
     expectedSignalIds: ["codex-built-in-browser-context"],
   },
   {
-    id: "codex-chrome-extension",
-    name: "Codex Chrome extension",
+    id: "chatgpt-desktop-codex-chrome-extension",
+    name: "ChatGPT Desktop — Codex + Chrome extension",
     provider: "OpenAI",
     summary: "Codex controls Chrome through OpenAI's browser extension.",
     modes: ["launch", "takeover"],
@@ -194,14 +194,14 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
         ],
       },
     ],
-    docsPath: "docs/approaches/codex-chrome-extension.md",
+    docsPath: "docs/approaches/chatgpt-desktop-codex-chrome-extension.md",
     expectedSignalIds: ["codex-extension-agent-overlay-root"],
     promptSetup:
       'First initialize the installed Google Chrome browser-control client and select agent.browsers.get("chrome"). List the open Chrome tabs to verify the connection. Do not declare the native host unavailable or outdated without attempting browser setup and reporting the exact setup error. Use Google Chrome, not Edge or the built-in browser. After opening or selecting the test page, report its tab ID, title, and URL, and continue in that same tab without opening another copy.',
   },
   {
-    id: "codex-computer-use",
-    name: "Codex Computer Use",
+    id: "chatgpt-desktop-codex-computer-use",
+    name: "ChatGPT Desktop — Codex Computer Use",
     provider: "OpenAI",
     summary: "A Codex task visually operates a permitted Chrome window on the desktop.",
     modes: ["launch", "takeover"],
@@ -223,105 +223,74 @@ export const AGENTIC_APPROACHES: readonly AgenticApproach[] = [
         ],
       },
     ],
-    docsPath: "docs/approaches/codex-computer-use.md",
+    docsPath: "docs/approaches/chatgpt-desktop-codex-computer-use.md",
     expectedSignalIds: [],
   },
   {
-    id: "claude-code-playwright-mcp",
-    name: "Claude Code + Playwright MCP",
-    provider: "Anthropic",
-    summary: "Claude Code uses the Playwright MCP server to control a browser.",
+    id: "playwright-mcp",
+    name: "Playwright MCP",
+    provider: "Microsoft",
+    summary: "An MCP-capable agent host uses Playwright MCP to control a browser.",
     modes: ["launch"],
     instructions: [
       {
         mode: "launch",
         steps: [
-          "Configure the official Playwright MCP server in Claude Code and start a fresh session.",
+          "Configure the official Playwright MCP server in the agent host you want to test and start a fresh session.",
           "Confirm the Playwright browser tools are available.",
-          "Copy the generated prompt below into Claude Code.",
+          "Copy the generated prompt below into that agent host.",
         ],
       },
     ],
-    docsPath: "docs/approaches/claude-code-playwright-mcp.md",
+    docsPath: "docs/approaches/playwright-mcp.md",
     expectedSignalIds: ["navigator-webdriver", "playwright-window-globals"],
   },
   {
-    id: "claude-code-chrome-devtools-mcp",
-    name: "Claude Code + Chrome DevTools MCP",
-    provider: "Anthropic",
-    summary: "Claude Code uses Chrome DevTools MCP to control a launched or connected Chrome.",
+    id: "chrome-devtools-mcp",
+    name: "Chrome DevTools MCP",
+    provider: "Google",
+    summary: "An MCP-capable agent host uses Chrome DevTools MCP to control a launched or connected Chrome.",
     modes: ["launch", "takeover"],
     instructions: [
       {
         mode: "launch",
         steps: [
-          "Configure Chrome DevTools MCP in Claude Code with its normal browser-launch mode.",
-          "Start a fresh Claude Code session and confirm the server tools are available.",
-          "Copy the generated prompt below into Claude Code.",
+          "Configure Chrome DevTools MCP in the agent host you want to test with its normal browser-launch mode.",
+          "Start a fresh session and confirm the server tools are available.",
+          "Copy the generated prompt below into that agent host.",
         ],
       },
       {
         mode: "takeover",
         steps: [
           `Start Chrome with remote debugging enabled and open ${TEST_URL_PLACEHOLDER} in that Chrome instance.`,
-          "Configure Chrome DevTools MCP to connect to that instance, then start Claude Code.",
-          "Copy the generated prompt below into Claude Code.",
+          "Configure Chrome DevTools MCP to connect to that instance, then start or restart the agent host.",
+          "Copy the generated prompt below into that agent host.",
         ],
       },
     ],
-    docsPath: "docs/approaches/claude-code-chrome-devtools-mcp.md",
-    expectedSignalIds: [],
-  },
-  {
-    id: "codex-playwright-mcp",
-    name: "Codex + Playwright MCP",
-    provider: "OpenAI",
-    summary: "Codex uses the Playwright MCP server to control a browser.",
-    modes: ["launch"],
-    instructions: [
-      {
-        mode: "launch",
-        steps: [
-          "Add the official Playwright MCP server to Codex and restart the Codex host.",
-          "Confirm the Playwright browser tools are available.",
-          "Copy the generated prompt below into the Codex task.",
-        ],
-      },
-    ],
-    docsPath: "docs/approaches/codex-playwright-mcp.md",
-    expectedSignalIds: ["navigator-webdriver", "playwright-window-globals"],
-  },
-  {
-    id: "codex-chrome-devtools-mcp",
-    name: "Codex + Chrome DevTools MCP",
-    provider: "OpenAI",
-    summary: "Codex uses Chrome DevTools MCP to control a launched or connected Chrome.",
-    modes: ["launch", "takeover"],
-    instructions: [
-      {
-        mode: "launch",
-        steps: [
-          "Add Chrome DevTools MCP to Codex with its normal browser-launch mode and restart the Codex host.",
-          "Confirm the server tools are available.",
-          "Copy the generated prompt below into the Codex task.",
-        ],
-      },
-      {
-        mode: "takeover",
-        steps: [
-          `Start Chrome with remote debugging enabled and open ${TEST_URL_PLACEHOLDER} in that Chrome instance.`,
-          "Configure Chrome DevTools MCP to connect to that instance and restart the Codex host.",
-          "Copy the generated prompt below into the Codex task.",
-        ],
-      },
-    ],
-    docsPath: "docs/approaches/codex-chrome-devtools-mcp.md",
+    docsPath: "docs/approaches/chrome-devtools-mcp.md",
     expectedSignalIds: [],
   },
 ];
 
+const APPROACH_ALIASES: Readonly<Record<string, string>> = Object.freeze({
+  "claude-code-desktop-browser-pane": "claude-desktop-browser-pane",
+  "claude-computer-use": "claude-desktop-computer-use",
+  "codex-built-in-browser": "chatgpt-desktop-codex-browser",
+  "codex-chrome-extension": "chatgpt-desktop-codex-chrome-extension",
+  "codex-computer-use": "chatgpt-desktop-codex-computer-use",
+  "claude-code-playwright-mcp": "playwright-mcp",
+  "codex-playwright-mcp": "playwright-mcp",
+  "claude-code-chrome-devtools-mcp": "chrome-devtools-mcp",
+  "codex-chrome-devtools-mcp": "chrome-devtools-mcp",
+});
+
 export function getApproach(id: string): AgenticApproach {
-  const approach = AGENTIC_APPROACHES.find((candidate) => candidate.id === id);
+  const canonicalId = APPROACH_ALIASES[id] ?? id;
+  const approach = AGENTIC_APPROACHES.find(
+    (candidate) => candidate.id === canonicalId,
+  );
 
   if (approach === undefined) {
     throw new Error(`Unknown agentic approach: ${id}`);

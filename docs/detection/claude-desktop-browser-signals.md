@@ -1,6 +1,6 @@
 # Claude Desktop Browser signals
 
-The Claude Code Desktop in-app Browser exposes three independently reported signals:
+The Browser pane in the Claude Desktop Code tab exposes three independently reported signals:
 
 | Signal | Detected when | Conclusion |
 | --- | --- | --- |

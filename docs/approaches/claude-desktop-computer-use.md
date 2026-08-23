@@ -1,4 +1,4 @@
-# Claude Desktop Computer Use
+# Claude Desktop — Computer Use
 
 ## What it is
 

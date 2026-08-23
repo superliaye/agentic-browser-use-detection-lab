@@ -1,4 +1,4 @@
-# Claude Code + Chrome
+# Claude Code — Chrome
 
 ## What it is
 

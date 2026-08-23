@@ -33,8 +33,8 @@ The current probes inspect:
 - Claude Desktop's `Claude/<version>` user-agent token.
 - Claude accessibility ref-tracking globals.
 - Electron's user-agent token as informational runtime evidence only.
-- The Codex built-in Browser context root.
-- The Codex Chrome extension agent-overlay root.
+- The ChatGPT Desktop Codex Browser context root.
+- The ChatGPT Desktop Codex Chrome-extension agent-overlay root.
 - `navigator.webdriver`.
 - Playwright's `window.__playwright__binding__` and `window.__pwInitScripts` globals.
 
@@ -42,22 +42,20 @@ See [detection mechanisms](docs/detection/) and [browser observability limits](d
 
 ## Approach catalog
 
-Sources were inspected on 2026-08-22. The Codex built-in Browser and Chrome extension flows were manually inspected; each approach page records the tested versions and whether the remaining conclusions are source-grounded, conditionally detectable, or still untested.
+The catalog names the host product when a flow belongs to Claude Desktop, Claude Code, or ChatGPT Desktop. Model-independent MCP controllers have one shared entry. Each approach page records its tested host, configuration, versions, and detection limits.
 
 | Approach | Modes | Agentic detection | Generic automation detection | Current limitation | Notes |
 | --- | --- | --- | --- | --- | --- |
 | [Claude in Chrome side panel](docs/approaches/claude-in-chrome-side-panel.md) | Launch, takeover | Marker-triggered | Conditional | Coverage across current extension versions is not established | Active marker transition manually observed |
-| [Claude Desktop + Chrome connector](docs/approaches/claude-desktop-chrome-connector.md) | Launch, takeover | Marker-triggered | Conditional | Versions beyond Desktop 1.3109.9 and extension 1.0.85 are unverified | Uses Claude in Chrome |
-| [Claude Code + Chrome](docs/approaches/claude-code-chrome.md) | Launch | Marker-triggered | Conditional | Versions beyond Claude Code 2.1.240 and extension 1.0.85 are unverified | Official integration opens task tabs |
-| [Claude Code Desktop Browser pane](docs/approaches/claude-code-desktop-browser-pane.md) | Launch, takeover | UA or ref globals | Not observed | Signals inspected only in Claude Desktop 1.34493.1 (255293) | Electron runtime; separate in-app profile |
-| [Claude Desktop Computer Use](docs/approaches/claude-computer-use.md) | None | Not testable | Not testable | Browsers are view-only in Desktop 1.34493.1 (255293) | Limitation fully inspected |
-| [Codex built-in Browser](docs/approaches/codex-built-in-browser.md) | Launch, takeover | Marker-triggered | Not observed | Marker inspected only in Codex 26.818.41509 | `#codex-browser-sidebar-comments-root` |
-| [Codex Chrome extension](docs/approaches/codex-chrome-extension.md) | Launch, takeover | Marker-triggered | Not observed | Verified with extension 1.2.27268.51612 | Retained agent-overlay root |
-| [Codex Computer Use](docs/approaches/codex-computer-use.md) | Launch, takeover | No known signal | Untested | Native input may be page-unobservable | macOS and Windows desktop flow |
-| [Claude Code + Playwright MCP](docs/approaches/claude-code-playwright-mcp.md) | Launch | No | Conditional | Generic signals do not identify Claude | WebDriver or Playwright globals |
-| [Claude Code + Chrome DevTools MCP](docs/approaches/claude-code-chrome-devtools-mcp.md) | Launch, takeover | No | Conditional | CDP alone has no current reliable probe | WebDriver may appear in launched browsers |
-| [Codex + Playwright MCP](docs/approaches/codex-playwright-mcp.md) | Launch | No | Conditional | Generic signals do not identify Codex | WebDriver or Playwright globals |
-| [Codex + Chrome DevTools MCP](docs/approaches/codex-chrome-devtools-mcp.md) | Launch, takeover | No | Conditional | CDP alone has no current reliable probe | WebDriver may appear in launched browsers |
+| [Claude Desktop — Chrome connector](docs/approaches/claude-desktop-chrome-connector.md) | Launch, takeover | Marker-triggered | Conditional | Versions beyond Desktop 1.3109.9 and extension 1.0.85 are unverified | Uses Claude in Chrome |
+| [Claude Code — Chrome](docs/approaches/claude-code-chrome.md) | Launch | Marker-triggered | Conditional | Versions beyond Claude Code 2.1.240 and extension 1.0.85 are unverified | Official integration opens task tabs |
+| [Claude Desktop — Browser pane](docs/approaches/claude-desktop-browser-pane.md) | Launch, takeover | UA or ref globals | Not observed | Signals inspected only in Claude Desktop 1.34493.1 (255293) | Code tab; separate in-app profile |
+| [Claude Desktop — Computer Use](docs/approaches/claude-desktop-computer-use.md) | None | Not testable | Not testable | Browsers are view-only in Desktop 1.34493.1 (255293) | Limitation fully inspected |
+| [ChatGPT Desktop — Codex Browser](docs/approaches/chatgpt-desktop-codex-browser.md) | Launch, takeover | Marker-triggered | Not observed | Marker inspected only in Codex 26.818.41509 | `#codex-browser-sidebar-comments-root` |
+| [ChatGPT Desktop — Codex + Chrome extension](docs/approaches/chatgpt-desktop-codex-chrome-extension.md) | Launch, takeover | Marker-triggered | Not observed | Verified with extension 1.2.27268.51612 | Retained agent-overlay root |
+| [ChatGPT Desktop — Codex Computer Use](docs/approaches/chatgpt-desktop-codex-computer-use.md) | Launch, takeover | No known signal | Untested | Native input may be page-unobservable | macOS and Windows desktop flow |
+| [Playwright MCP](docs/approaches/playwright-mcp.md) | Launch | No | Not observed in tested default launch | No passive deterministic signal found in the tested configuration | Other configurations may expose existing generic signals |
+| [Chrome DevTools MCP](docs/approaches/chrome-devtools-mcp.md) | Launch, takeover | No | Conditional | CDP alone has no current reliable probe | WebDriver may appear in launched browsers |
 
 Other products, API reference harnesses, and generic agent frameworks are listed only in the [appendix](docs/appendix.md).
 

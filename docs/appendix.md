@@ -15,8 +15,6 @@ Detection depends on the chosen harness, browser launch flags, transport, and in
 - [Stagehand](https://github.com/browserbase/stagehand)
 - [Playwright](https://playwright.dev/) and [Puppeteer](https://pptr.dev/)
 - [Selenium](https://www.selenium.dev/)
-- [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp)
-- [Playwright MCP](https://playwright.dev/mcp/introduction)
 
 These may expose `navigator.webdriver`, Playwright globals, or no current runtime signal, depending on configuration.
 

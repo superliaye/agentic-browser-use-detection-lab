@@ -178,7 +178,7 @@ test("distinguishes current detection from earlier detection in the session", ()
   );
 });
 
-test("detects the Codex built-in Browser marker as agentic use only", () => {
+test("detects the ChatGPT Desktop Codex Browser marker as agentic use only", () => {
   const result = runCodexBuiltInBrowserDetection();
 
   assert.equal(result.isAgenticUseDetected, true);

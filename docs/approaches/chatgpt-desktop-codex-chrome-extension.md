@@ -1,15 +1,15 @@
-# Codex Chrome extension
+# ChatGPT Desktop — Codex + Chrome extension
 
 ## What it is
 
-OpenAI's ChatGPT Chrome extension opens a side chat beside the current tab. A ChatGPT Work or Codex chat can use the Chrome plugin to read or act on permitted sites in the user's signed-in Chrome profile and can open task tab groups.
+This flow is a Codex task in the ChatGPT desktop app using OpenAI's Chrome plugin and extension. It can read or act on permitted sites in the user's signed-in Chrome profile and can open task tab groups.
 
 ## Test
 
 Supported modes: **launch** and **takeover**.
 
 1. In the ChatGPT desktop app, install the Chrome plugin and its Chrome extension.
-2. Start a new Codex task with the Chrome plugin enabled. For takeover, first open the [lab](https://superliaye.github.io/agentic-browser-use-detection-lab/?approach=codex-chrome-extension&mode=takeover) in Google Chrome.
+2. Start a new Codex task with the Chrome plugin enabled. For takeover, first open the [lab](https://superliaye.github.io/agentic-browser-use-detection-lab/?approach=chatgpt-desktop-codex-chrome-extension&mode=takeover) in Google Chrome.
 3. Give Codex the generated prompt and approve site access if asked. The prompt makes Codex initialize its Chrome client, verify the tab, and stay in that same tab for the interaction and result.
 
 ## Detection

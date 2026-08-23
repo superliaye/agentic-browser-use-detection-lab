@@ -5,6 +5,7 @@ import {
 } from "../detector/index.js";
 import {
   AGENTIC_APPROACHES,
+  getApproach,
   type AgenticApproach,
   type EntryMode,
 } from "./approaches.js";
@@ -206,9 +207,16 @@ for (const approach of AGENTIC_APPROACHES) {
 }
 
 const query = new URLSearchParams(window.location.search);
-const requestedApproach = AGENTIC_APPROACHES.find(
-  ({ id }) => id === query.get("approach"),
-);
+const requestedApproachId = query.get("approach");
+let requestedApproach: AgenticApproach | undefined;
+
+if (requestedApproachId !== null) {
+  try {
+    requestedApproach = getApproach(requestedApproachId);
+  } catch {
+    requestedApproach = undefined;
+  }
+}
 const firstApproach = AGENTIC_APPROACHES[0];
 
 if (firstApproach === undefined) {

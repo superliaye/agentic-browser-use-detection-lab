@@ -1,6 +1,6 @@
-# Codex built-in Browser marker
+# ChatGPT Desktop Codex Browser marker
 
-The Codex built-in Browser injects this root into the page DOM:
+The Browser pane used by a Codex task in the ChatGPT desktop app injects this root into the page DOM:
 
 ```html
 <div id="codex-browser-sidebar-comments-root"></div>

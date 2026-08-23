@@ -61,7 +61,7 @@ test("unsupported modes are rejected", () => {
 });
 
 test("Claude Desktop Computer Use is represented as browser view-only", () => {
-  const approach = getApproach("claude-computer-use");
+  const approach = getApproach("claude-desktop-computer-use");
 
   assert.deepEqual(approach.modes, []);
   assert.throws(
@@ -74,17 +74,63 @@ test("query selections round-trip through a Pages subpath URL", () => {
   const url = new URL(
     buildLaunchUrl(
       "https://superliaye.github.io/agentic-browser-use-detection-lab/",
-      "codex-built-in-browser",
+      "chatgpt-desktop-codex-browser",
     ),
   );
 
-  assert.equal(url.searchParams.get("approach"), "codex-built-in-browser");
+  assert.equal(
+    url.searchParams.get("approach"),
+    "chatgpt-desktop-codex-browser",
+  );
   assert.equal(url.searchParams.get("mode"), "launch");
 });
 
-test("catalog exposes twelve distinct Claude and Codex approaches", () => {
-  assert.equal(AGENTIC_APPROACHES.length, 12);
-  assert.equal(new Set(AGENTIC_APPROACHES.map(({ id }) => id)).size, 12);
+test("catalog exposes one approach per model-independent MCP controller", () => {
+  assert.equal(getApproach("playwright-mcp").name, "Playwright MCP");
+  assert.equal(getApproach("chrome-devtools-mcp").name, "Chrome DevTools MCP");
+  assert.equal(
+    AGENTIC_APPROACHES.filter(({ name }) => name.includes("Playwright MCP")).length,
+    1,
+  );
+  assert.equal(
+    AGENTIC_APPROACHES.filter(({ name }) => name.includes("Chrome DevTools MCP"))
+      .length,
+    1,
+  );
+});
+
+test("catalog names identify the desktop host for embedded browser approaches", () => {
+  assert.equal(
+    getApproach("claude-desktop-browser-pane").name,
+    "Claude Desktop — Browser pane",
+  );
+  assert.equal(
+    getApproach("chatgpt-desktop-codex-browser").name,
+    "ChatGPT Desktop — Codex Browser",
+  );
+});
+
+test("renamed approach URLs resolve to their canonical catalog entries", () => {
+  const aliases = {
+    "claude-code-desktop-browser-pane": "claude-desktop-browser-pane",
+    "claude-computer-use": "claude-desktop-computer-use",
+    "codex-built-in-browser": "chatgpt-desktop-codex-browser",
+    "codex-chrome-extension": "chatgpt-desktop-codex-chrome-extension",
+    "codex-computer-use": "chatgpt-desktop-codex-computer-use",
+    "claude-code-playwright-mcp": "playwright-mcp",
+    "codex-playwright-mcp": "playwright-mcp",
+    "claude-code-chrome-devtools-mcp": "chrome-devtools-mcp",
+    "codex-chrome-devtools-mcp": "chrome-devtools-mcp",
+  };
+
+  for (const [legacyId, canonicalId] of Object.entries(aliases)) {
+    assert.equal(getApproach(legacyId).id, canonicalId, legacyId);
+  }
+});
+
+test("catalog exposes ten distinct canonical approaches", () => {
+  assert.equal(AGENTIC_APPROACHES.length, 10);
+  assert.equal(new Set(AGENTIC_APPROACHES.map(({ id }) => id)).size, 10);
 });
 
 test("every catalog documentation link resolves to a repository file", () => {

@@ -2,7 +2,7 @@ import type { DetectionProbe } from "../types.js";
 
 const CODEX_BROWSER_CONTEXT_SELECTOR = "#codex-browser-sidebar-comments-root";
 
-// This product-owned root identifies a page loaded in Codex's built-in Browser.
+// This product-owned root identifies a page loaded in a ChatGPT Desktop Codex Browser.
 export const codexBuiltInBrowserProbe: DetectionProbe = {
   id: "codex-built-in-browser-context",
   area: "product_dom",

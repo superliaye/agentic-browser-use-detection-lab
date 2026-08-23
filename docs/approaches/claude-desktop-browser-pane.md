@@ -1,4 +1,4 @@
-# Claude Code Desktop Browser pane
+# Claude Desktop — Browser pane
 
 ## What it is
 
@@ -10,7 +10,7 @@ Supported modes: **launch** and **takeover**.
 
 1. Open a Code session in Claude Desktop.
 2. Open Browser with Cmd+Shift+B on macOS or Ctrl+Shift+B on Windows.
-3. Open the [lab](https://superliaye.github.io/agentic-browser-use-detection-lab/?approach=claude-code-desktop-browser-pane&mode=takeover) in that pane or give Claude the generated launch prompt.
+3. Open the [lab](https://superliaye.github.io/agentic-browser-use-detection-lab/?approach=claude-desktop-browser-pane&mode=takeover) in that pane or give Claude the generated launch prompt.
 4. Approve the external site's actions if asked.
 
 ## Detection
