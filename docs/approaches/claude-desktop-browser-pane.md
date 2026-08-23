@@ -28,11 +28,11 @@ In the inspected run, `navigator.webdriver` was `false` and no known Playwright 
 
 ### Launch new
 
-<img width="1928" height="1378" alt="Claude Desktop Browser launch-flow detection snapshot" src="https://github.com/user-attachments/assets/34afde42-997b-4295-a27e-b9793c13dff3" />
+<img width="1928" height="1378" alt="Claude Desktop Browser launch-flow detection snapshot" src="../assets/approaches/claude-desktop-browser-pane-launch.png" />
 
 ### Update loaded tab
 
-<img width="1938" height="1175" alt="Claude Desktop Browser takeover-flow detection snapshot" src="https://github.com/user-attachments/assets/ba7b573f-fb86-4a38-9765-e6a55148882e" />
+<img width="1938" height="1175" alt="Claude Desktop Browser takeover-flow detection snapshot" src="../assets/approaches/claude-desktop-browser-pane-takeover.png" />
 
 ## Inspection
 

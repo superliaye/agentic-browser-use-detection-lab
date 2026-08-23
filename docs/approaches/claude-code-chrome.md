@@ -20,7 +20,7 @@ The detector watches the Claude active-control and retained-style markers. A sig
 The active-control marker transition was observed with Claude Code 2.1.240 and Claude in Chrome 1.0.85. Coverage beyond that version pair and across other browser actions is unverified.
 
 ## Live Snapshot
-<img width="2020" height="964" alt="Claude Code 2.1.240 with Claude in Chrome 1.0.85 detection lab snapshot" src="https://github.com/user-attachments/assets/1bf2f3c1-bd76-4da4-be16-73f5c680e16f" />
+<img width="2020" height="964" alt="Claude Code 2.1.240 with Claude in Chrome 1.0.85 detection lab snapshot" src="../assets/approaches/claude-code-chrome.png" />
 
 ## Inspection
 

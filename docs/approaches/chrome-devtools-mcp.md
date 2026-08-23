@@ -32,7 +32,7 @@ Neither opt-in path is required for the default launch or takeover flow. Without
 This result covers only the server's default browser-launch mode. A connection to an existing Chrome or a modified launch configuration may expose different or no generic signals; neither was tested. Ordinary CDP control still has no deterministic agent-specific signal. The Runtime observer probe is informational, and the obsolete `Error.stack` getter is deliberately excluded.
 
 ## Live Snapshot
-<img width="2645" height="1295" alt="image" src="https://github.com/user-attachments/assets/36e76f44-35a3-4a38-97e2-a8512a12683e" />
+<img width="2645" height="1295" alt="Chrome DevTools MCP default-launch detection lab snapshot" src="../assets/approaches/chrome-devtools-mcp-default-launch.png" />
 
 ## Inspection
 

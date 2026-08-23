@@ -22,7 +22,7 @@ The active-control marker was observed while Claude operated the tab. The signal
 A marker that remains `not_detected` means only that it was not observed. The markers come from third-party reverse engineering; a manual lab run with Claude in Chrome 1.0.85 observed the active-control marker transition. Coverage beyond that version is not established.
 
 ## Live Snapshot
-<img width="1897" height="1134" alt="Claude in Chrome 1.0.85 detection lab snapshot" src="https://github.com/user-attachments/assets/49113dc6-3cec-4943-89bc-0a10bb1a7aae" />
+<img width="1897" height="1134" alt="Claude in Chrome 1.0.85 detection lab snapshot" src="../assets/approaches/claude-in-chrome-side-panel.png" />
 
 ## Inspection
 

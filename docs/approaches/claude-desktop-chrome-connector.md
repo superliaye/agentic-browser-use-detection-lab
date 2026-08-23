@@ -19,7 +19,7 @@ Because this flow uses Claude in Chrome, the detector watches the same active an
 The active-control marker transition was observed with Claude Desktop 1.3109.9 (35cbf6) and Claude in Chrome 1.0.85. Coverage beyond that version pair is unverified. A negative result does not distinguish a missed marker from no agent use.
 
 ## Live Snapshot
-<img width="3435" height="1389" alt="Claude Desktop 1.3109.9 with Claude in Chrome 1.0.85 detection lab snapshot" src="https://github.com/user-attachments/assets/0cffa804-f3cf-4296-b90a-120bff478331" />
+<img width="3435" height="1389" alt="Claude Desktop 1.3109.9 with Claude in Chrome 1.0.85 detection lab snapshot" src="../assets/approaches/claude-desktop-chrome-connector.png" />
 
 ## Inspection
 

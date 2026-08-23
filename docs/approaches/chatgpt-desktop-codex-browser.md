@@ -21,7 +21,7 @@ The signal is `detected_now` while the element is present and `detected_earlier_
 In the inspected run, `navigator.webdriver` was `false` and neither Playwright global was present, so `isGenericAutomationDetected` remained `false`.
 
 ## Live snapshot
-<img width="1967" height="1062" alt="image" src="https://github.com/user-attachments/assets/1d2788c7-6b6a-4212-a274-c314f8823081" />
+<img width="1967" height="1062" alt="ChatGPT Desktop Codex Browser detection lab snapshot" src="../assets/approaches/chatgpt-desktop-codex-browser.png" />
 
 
 ## Inspection

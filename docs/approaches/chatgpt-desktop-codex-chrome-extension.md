@@ -30,7 +30,7 @@ The signal is `detected_now` while the root is present and `detected_earlier_in_
 The verified run set `isAgenticUseDetected` to `true` and reported `codex-extension-agent-overlay-root` as `detected_now`. `navigator.webdriver` and the known Playwright globals remained undetected, so `isGenericAutomationDetected` stayed `false`. The lab does not treat extension installation as agentic use and does not probe the extension's web-accessible cursor asset.
 
 ## Live snapshot
-<img width="1693" height="1212" alt="image" src="https://github.com/user-attachments/assets/ec6fb3a6-da36-4c2a-8e0c-e7ee1f18cf4b" />
+<img width="1693" height="1212" alt="ChatGPT Desktop Codex Chrome extension detection lab snapshot" src="../assets/approaches/chatgpt-desktop-codex-chrome-extension.png" />
 
 ## Inspection
 
