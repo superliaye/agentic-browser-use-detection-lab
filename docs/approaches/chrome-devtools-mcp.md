@@ -16,6 +16,9 @@ Supported modes: **launch** and **takeover**.
 
 No signal attributes this flow to a particular model or agent host. A server-launched browser may expose `navigator.webdriver`, which concludes generic automation. A connection to an existing Chrome may expose none of the current probes. CDP alone is not detected; the obsolete `Error.stack` getter is deliberately excluded.
 
+## Live Snapshot
+<img width="2645" height="1295" alt="image" src="https://github.com/user-attachments/assets/36e76f44-35a3-4a38-97e2-a8512a12683e" />
+
 ## Inspection
 
 - Official repository and docs inspected: 2026-08-22.
