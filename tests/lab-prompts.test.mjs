@@ -7,6 +7,7 @@ import {
   getApproach,
 } from "../.test-dist/src/lab/approaches.js";
 import * as promptBuilders from "../.test-dist/src/lab/prompts.js";
+import { handleWebMcpSubmit } from "../.test-dist/src/lab/webmcp-handshake.js";
 
 const { buildLaunchUrl, buildTestPrompt } = promptBuilders;
 
@@ -97,6 +98,60 @@ test("catalog exposes one approach per model-independent MCP controller", () => 
       .length,
     1,
   );
+});
+
+test("Chrome DevTools MCP prompt keeps the cooperative handshake optional", () => {
+  const approach = getApproach("chrome-devtools-mcp");
+  const prompt = buildTestPrompt(
+    approach,
+    "launch",
+    "https://example.test/?approach=chrome-devtools-mcp&mode=launch",
+  );
+
+  assert.match(prompt, /If execute_webmcp_tool is available/);
+  assert.match(prompt, /do not substitute another MCP server or controller/i);
+  assert.deepEqual(approach.expectedSignalIds, [
+    "navigator-webdriver",
+    "cdp-zero-mouse-pressure",
+    "cooperative-webmcp-handshake",
+    "chrome-devtools-third-party-bridge",
+  ]);
+});
+
+test("WebMCP handshake ignores normal form submission", () => {
+  let prevented = false;
+  let marked = false;
+  const handled = handleWebMcpSubmit(
+    {
+      preventDefault() {
+        prevented = true;
+      },
+    },
+    () => {
+      marked = true;
+    },
+  );
+
+  assert.equal(handled, false);
+  assert.equal(prevented, true);
+  assert.equal(marked, false);
+});
+
+test("WebMCP handshake records browser-declared agent invocation", async () => {
+  let response;
+  const handled = handleWebMcpSubmit(
+    {
+      agentInvoked: true,
+      preventDefault() {},
+      respondWith(result) {
+        response = result;
+      },
+    },
+    () => ({ detected: true }),
+  );
+
+  assert.equal(handled, true);
+  assert.deepEqual(await response, { detected: true });
 });
 
 test("catalog names identify the desktop host for embedded browser approaches", () => {

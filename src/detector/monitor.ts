@@ -69,6 +69,7 @@ export function createAgenticUseDetector(
   let isStarted = false;
   let isStopped = false;
   let disposeDocumentObservation: (() => void) | undefined;
+  let disposePointerObservation: (() => void) | undefined;
 
   const inspectAndPublish = (): void => {
     if (isStopped) {
@@ -128,6 +129,7 @@ export function createAgenticUseDetector(
       isStarted = true;
       inspectAndPublish();
       disposeDocumentObservation = environment.subscribeToDocumentChanges(inspectAndPublish);
+      disposePointerObservation = environment.subscribeToPointerEvents(inspectAndPublish);
     },
 
     stop(): void {
@@ -138,6 +140,8 @@ export function createAgenticUseDetector(
       isStopped = true;
       disposeDocumentObservation?.();
       disposeDocumentObservation = undefined;
+      disposePointerObservation?.();
+      disposePointerObservation = undefined;
       listeners.clear();
     },
 

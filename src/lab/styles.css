@@ -32,6 +32,15 @@ body {
   margin: 0;
 }
 
+.webmcp-handshake-tool {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 button,
 select,
 textarea {

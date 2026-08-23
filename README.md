@@ -23,7 +23,7 @@ type DetectionSignalStatus =
   | "error";
 ```
 
-There are no likelihood scores. Each boolean latches independently: product-specific signals set `isAgenticUseDetected`, while generic WebDriver or Playwright signals set `isGenericAutomationDetected`. Per-signal status distinguishes evidence present during the latest inspection from evidence seen earlier in the detector session. `evidence` always contains the latest inspection, including when a previously seen marker is now absent. `unsupported` and `error` describe the latest inspection and take precedence over session history.
+There are no likelihood scores. Each boolean latches independently: product-specific or cooperative agent signals set `isAgenticUseDetected`, while generic WebDriver or Playwright signals set `isGenericAutomationDetected`. Per-signal status distinguishes evidence present during the latest inspection from evidence seen earlier in the detector session. `evidence` always contains the latest inspection, including when a previously seen marker is now absent. `unsupported` and `error` describe the latest inspection and take precedence over session history.
 
 A generic automation signal does not determine whether an agent or another automation harness caused it. “Deterministic” assumes normal, non-adversarial tooling; page-visible state can be removed or forged.
 
@@ -35,8 +35,10 @@ The current probes inspect:
 - Electron's user-agent token as informational runtime evidence only.
 - The ChatGPT Desktop Codex Browser context root.
 - The ChatGPT Desktop Codex Chrome-extension agent-overlay root.
+- A cooperative WebMCP handshake and Chrome DevTools MCP's separate `window.__dtmcp` bridge marker.
 - `navigator.webdriver`.
 - Playwright's `window.__playwright__binding__` and `window.__pwInitScripts` globals.
+- Trusted active mouse input with zero pressure as informational evidence only.
 
 See [detection mechanisms](docs/detection/) and [browser observability limits](docs/detection/browser-observability-limits.md).
 
@@ -55,7 +57,7 @@ The catalog names the host product when a flow belongs to Claude Desktop, Claude
 | [ChatGPT Desktop — Codex + Chrome extension](docs/approaches/chatgpt-desktop-codex-chrome-extension.md) | Launch, takeover | Marker-triggered | Not observed | Verified with extension 1.2.27268.51612 | Retained agent-overlay root |
 | [ChatGPT Desktop — Codex Computer Use](docs/approaches/chatgpt-desktop-codex-computer-use.md) | Launch, takeover | No known signal | Untested | Native input may be page-unobservable | macOS and Windows desktop flow |
 | [Playwright MCP](docs/approaches/playwright-mcp.md) | Launch | No | Not observed in tested default launch | No passive deterministic signal found in the tested configuration | Other configurations may expose existing generic signals |
-| [Chrome DevTools MCP](docs/approaches/chrome-devtools-mcp.md) | Launch, takeover | No | Conditional | CDP alone has no current reliable probe | WebDriver may appear in launched browsers |
+| [Chrome DevTools MCP](docs/approaches/chrome-devtools-mcp.md) | Launch, takeover | Cooperative or bridge-triggered | Observed in one default launch; takeover untested | Normal CDP control has no agent-specific probe | Server 1.7.0 exposed WebDriver; zero mouse pressure is informational |
 
 Other products, API reference harnesses, and generic agent frameworks are listed only in the [appendix](docs/appendix.md).
 

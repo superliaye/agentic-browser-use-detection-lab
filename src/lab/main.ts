@@ -10,9 +10,14 @@ import {
   type EntryMode,
 } from "./approaches.js";
 import { buildGuideSteps, buildTestPrompt, buildTestUrl } from "./prompts.js";
+import { handleWebMcpSubmit } from "./webmcp-handshake.js";
 import "./styles.css";
 
 const REPOSITORY_URL = "https://github.com/superliaye/agentic-browser-use-detection-lab";
+const COOPERATIVE_WEB_MCP_TOOL_NAME = "agentic_use_detection_handshake";
+const COOPERATIVE_WEB_MCP_MARKER_ID = "agentic-use-detection-webmcp-handshake";
+const CHROME_DEVTOOLS_THIRD_PARTY_TOOL_NAME =
+  "agentic_use_detection_bridge_handshake";
 
 const app = document.querySelector<HTMLElement>("#app");
 
@@ -201,6 +206,49 @@ const genericAutomationVerdictDetail = requireElement<HTMLParagraphElement>(
 );
 const signalTableBody = requireElement<HTMLTableSectionElement>("#signal-table-body");
 const resultJson = requireElement<HTMLElement>("#result-json");
+
+function markCooperativeHandshake(): Readonly<{ detected: true }> {
+  if (document.getElementById(COOPERATIVE_WEB_MCP_MARKER_ID) === null) {
+    const marker = document.createElement("span");
+    marker.id = COOPERATIVE_WEB_MCP_MARKER_ID;
+    marker.hidden = true;
+    document.body.append(marker);
+  }
+
+  return Object.freeze({ detected: true });
+}
+
+const webMcpHandshakeTool = document.createElement("form");
+webMcpHandshakeTool.setAttribute("toolname", COOPERATIVE_WEB_MCP_TOOL_NAME);
+webMcpHandshakeTool.setAttribute(
+  "tooldescription",
+  "Records a cooperative agentic-use handshake in the detection lab.",
+);
+webMcpHandshakeTool.setAttribute("toolautosubmit", "");
+webMcpHandshakeTool.className = "webmcp-handshake-tool";
+webMcpHandshakeTool.addEventListener("submit", (event) => {
+  handleWebMcpSubmit(event, markCooperativeHandshake);
+});
+document.body.append(webMcpHandshakeTool);
+
+window.addEventListener("devtoolstooldiscovery", (event) => {
+  if (!("respondWith" in event) || typeof event.respondWith !== "function") {
+    return;
+  }
+
+  event.respondWith({
+    name: "Agentic use detection lab",
+    description: "Cooperative agentic-use detection tools.",
+    tools: [
+      {
+        name: CHROME_DEVTOOLS_THIRD_PARTY_TOOL_NAME,
+        description: "Confirms Chrome DevTools MCP third-party bridge discovery.",
+        inputSchema: { type: "object", properties: {}, additionalProperties: false },
+        execute: () => Object.freeze({ detected: true }),
+      },
+    ],
+  });
+});
 
 for (const approach of AGENTIC_APPROACHES) {
   approachSelect.append(createOption(approach.id, approach.name));
